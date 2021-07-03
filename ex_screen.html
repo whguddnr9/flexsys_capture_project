@@ -107,7 +107,7 @@ const button = document.getElementById('cake').onclick = () => canIRun ? takeScr
             // (초기화) 마우스 떼면서 마우스무브 이벤트 삭제 
             body.removeEventListener("mousemove", mousemove);
             // (초기화) 스크린샷을 위해 생성한 객체 삭제 
-           // $screenshot.parentNode.removeChild($screenshot);
+            $screenshot.parentNode.removeChild($screenshot);
             $screenBg.parentNode.removeChild($screenBg);
             var x = e.clientX;
             var y = e.clientY;
@@ -127,6 +127,16 @@ const button = document.getElementById('cake').onclick = () => canIRun ? takeScr
             body.removeEventListener("mouseup", mouseup);
             // 마우스 커서 기본으로 변경 
             document.querySelector("body").classList.remove("edit_cursor");
+           
+            //사각형 만들기
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext('2d');
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = "#ff0000";
+            var draw = false;
+            ctx.clearRect(0,0,canvas.width,canvas.height); //clear canvas
+            ctx.strokeRect(left, top, width, height);
+
         }
         body.addEventListener("mouseup", mouseup);
         // 마우스무브 이벤트 함수 
