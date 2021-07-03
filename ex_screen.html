@@ -115,6 +115,8 @@ const button = document.getElementById('cake').onclick = () => canIRun ? takeScr
             var left = Math.min(x, startX);
             var width = Math.max(x, startX) - left;
             var height = Math.max(y, startY) - top;
+
+
             html2canvas(document.body).then(function (canvas) { //전체 화면 캡쳐 
                 // 선택 영역만큼 crop 
                 var img = canvas.getContext('2d').getImageData(left, top, width, height);
@@ -122,20 +124,18 @@ const button = document.getElementById('cake').onclick = () => canIRun ? takeScr
                 c.width = width;
                 c.height = height;
                 c.getContext('2d').putImageData(img, 0, 0);
-                save(c); // crop한 이미지 저장 
+                //save(c); // crop한 이미지 저장 
             });
             body.removeEventListener("mouseup", mouseup);
             // 마우스 커서 기본으로 변경 
             document.querySelector("body").classList.remove("edit_cursor");
            
             //사각형 만들기
-            var canvas = document.getElementById("canvas");
-            var ctx = canvas.getContext('2d');
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = "#ff0000";
-            var draw = false;
-            ctx.clearRect(0,0,canvas.width,canvas.height); //clear canvas
-            ctx.strokeRect(left, top, width, height);
+            const canvas = document.getElementById('fake');
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillSytle = 'green';
+            ctx.fillRect(left, top, 100,100);
 
         }
         body.addEventListener("mouseup", mouseup);
@@ -151,7 +151,7 @@ const button = document.getElementById('cake').onclick = () => canIRun ? takeScr
                 var bottom = height - Math.max(y, startY);
                 var left = Math.min(x, startX);
                 $screenBg.style.borderWidth = top + 'px ' + right + 'px ' + bottom + 'px ' + left + 'px';
-                console.log(top,right,bottom,left);
+                console.log(left, top, width, height);
             }
         }
         body.addEventListener("mousemove", mousemove);
