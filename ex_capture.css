@@ -1,6 +1,7 @@
-/* body {
-  overflow: hidden;
-} */
+ body {
+  /* overflow: hidden; */
+  margin: 0;
+} 
 #cake {
   height: 35px;
   width: 120px;

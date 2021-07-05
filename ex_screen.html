@@ -11,13 +11,12 @@
 
 </head>
 <body>
+    <canvas id="fake"></canvas>
     <button id="cake" class = "screen_btn">takeScreenShot</button>
     <a id="target" style="display: none"></a>
 
     <br />
     <button id='edit'>capture</button>
-
-    <canvas id="fake"></canvas>
 
 </body>
 
@@ -134,8 +133,7 @@ const button = document.getElementById('cake').onclick = () => canIRun ? takeScr
             const canvas = document.getElementById('fake');
             const ctx = canvas.getContext('2d');
 
-            ctx.fillSytle = 'green';
-            ctx.fillRect(left, top, 100,100);
+            ctx.strokeRect(left, top, width, height);
 
         }
         body.addEventListener("mouseup", mouseup);
