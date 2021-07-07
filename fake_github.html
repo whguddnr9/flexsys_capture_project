@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>GitHub</title>
+    <meta name="author" content="HJo">
+    <meta name="description" content="GitHub is where people build software. 
+                                    More than 18 million people use GitHub to discover, 
+                                    fork, and contribute to over 48 million projects.">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, user-scaleable=no, maximum-scale=1, minimum-scale=1">
+    <!-- http://ogp.me/ -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="GitHub">
+    <meta property="og:title" content="Build software better, together">
+    <meta property="og:description"
+        content="GitHub clone coding / GitHub is where people build software. More than 31 million people use GitHub to discover, fork, and contribute to over 100 million projects.">
+    <meta property="og:image" content="img/logo__github.png">
+    <meta property="og:url" content="https://github.com">
+
+    <!-- https://developer.twitter.com/en/docs/tweets/optimize-with-cards/guides/getting-started.html -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:site" content="GitHub">
+    <meta property="twitter:title" content="Build software better, together">
+    <meta property="twitter:description"
+        content="GitHub clone coding / GitHub is where people build software. More than 31 million people use GitHub to discover, fork, and contribute to over 100 million projects.">
+    <meta property="twitter:image" content="img/logo__github.png">
+    <meta property="twitter:url" content="https://github.com">
+
+    <link rel="link" href="./favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" media="all and (max-width: 1024px)" href="css/main_medium.css">
+    <link rel="stylesheet" media="all and (max-width: 768px)" href="css/main_small.css">
+    <link rel="stylesheet" href="./css/btn_capture.css">
+    
+    <script defer src="./main.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+</head>
+
+<body>
+    <a id="target" style="display: none"></a>
+
+    <br />
+    <button id ="btn_capture">capture</button>
+    <canvas id="canvas_frmae"></canvas>
+
+    <div class="body__container">
+
+        <!-- HEADER -->
+        <header class="section">
+            <div class="inner clearfix">
+                <div class="menu-group float--left">
+                    <div class="logo">
+                        <a href="#">GitHub</a>
+                    </div>
+                    <ul class="main-menu toggle">
+                        <li><a href="#">Personal</a></li>
+                        <li><a href="#">Open source</a></li>
+                        <li><a href="#">Business</a></li>
+                        <li><a href="#">Explore</a></li>
+                    </ul>
+                </div>
+
+                <div class="sign-group float--right toggle">
+                    <div class="btn-group">
+                        <a href="#" class="btn sign-in">Sign in</a>
+                        <a href="#" class="btn btn--primary sign-up">Sign up</a>
+                    </div>
+                    <form id="search-form" method="POST" action="">
+                        <input type="text" id="search" class="input--text" placeholder="Serch GitHub">
+                        <input type="submit" value="Submit">
+                    </form>
+                    <ul class="sub-menu">
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+
+                <div id="toggle-btn">Header Menu Toggle Button</div>
+
+            </div>
+        </header>
+        <!-- VISUAL -->
+        <section class="section section--visual">
+            <div class="inner">
+
+                <div class="summary">
+                    <h2 class="summary__title">
+                        How&nbsp;people build&nbsp;software
+                    </h2>
+                    <p class="summary__description">
+                        Millions of developers use GitHub
+                        to build personal projects, support their businesses,
+                        and&nbsp;work together on open source technologies.
+                    </p>
+                </div>
+
+                <form id="sign-form" method="POST" action="">
+                    <ul>
+                        <li><input type="text" class="input--text" placeholder="Pick a username"></li>
+                        <li><input type="email" class="input--text" placeholder="Your email address"></li>
+                        <li>
+                            <input type="password" class="input--text" placeholder="Create a password">
+                            <p class="caption">Use at least one letter, one numeral, and seven characters.</p>
+                        </li>
+                        <li>
+                            <input type="submit" class="btn btn--primary" value="Sign up for GitHub"
+                                class="btn btn--primary"></input>
+                            <p class="caption">By clicking "Sign up for GitHub", you agree to our terms of service and
+                                privacy policy. We'll occasionally send you account related emails.</p>
+                        </li>
+                    </ul>
+                </form>
+
+            </div>
+        </section>
+
+        <!-- FEATURE -->
+        <section class="section section--feature">
+
+            <div class="summary">
+                <h2 class="summary__title">
+                    Welcome home, developers
+                </h2>
+                <p class="summary__description">
+                    GitHub fosters a fast, flexible,
+                    and collaborative development process
+                    that lets you work on your own or with others.
+                </p>
+            </div>
+
+            <div class="video">
+                <div class="video-ratio">
+                    <!-- <iframe width="650" height="366" src="https://www.youtube.com/embed/afvT1c1ii0c" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe> -->
+                </div>
+            </div>
+
+            <div class="tiles">
+                <div class="inner">
+
+                    <ul class="clearfix">
+                        <li>
+                            <img src="img/feature-tile__build.png" alt="build">
+                            <h3>For everything you build</h3>
+                            <p>Host and manage your code on GitHub. You can keep your work private or share it with the
+                                world.</p>
+                        </li>
+                        <li>
+                            <img src="img/feature-tile__work.png" alt="work">
+                            <h3>A better way to work</h3>
+                            <p>From hobbyists to professionals, GitHub helps developers simplify the way they build
+                                software.</p>
+                        </li>
+                        <li>
+                            <img src="img/feature-tile__projects.png" alt="projects">
+                            <h3>Millions of projects</h3>
+                            <p>GitHub is home to millions of open source projects. Try one out or get inspired to create
+                                your own.</p>
+                        </li>
+                        <li>
+                            <img src="img/feature-tile__platform.png" alt="platform">
+                            <h3>One platform, from start to finish</h3>
+                            <p>With hundreds of integrations, GitHub is flexible enough to be at the center of your
+                                development
+                                process.</p>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Where is -->
+
+        <section class="section section--where-is">
+            <div class="inner">
+
+                <div class="summary">
+                    <div class="summary__title">
+                        Where is GitHub?
+                    </div>
+                    <div class="summary__description">
+                        GitHub is where people build software.
+                        More than 18 million people use GitHub
+                        to discover, fork, and contribute to over 48 million projects.
+                    </div>
+                </div>
+
+                <!-- <div id="map"></div> -->
+
+            </div>
+        </section>
+
+        <!-- Pricing Card -->
+        <section class="section section--pricing">
+            <div class="inner">
+
+                <div class="card">
+                    <div class="cell cell1">
+                        <a href="#" class="btn btn--primary">Sign up GitHub</a>
+                    </div>
+                    <div class="cell cell2">
+                        Public projects are always free.
+                        Work together across unlimited private repositories for $7 / month.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="section">
+            <div class="inner clearfix">
+
+                <ul class="site-links float--right">
+                    <li><a href="#">Contact&nbsp;GitHub</a></li>
+                    <li><a href="#">API</a></li>
+                    <li><a href="#">Training</a></li>
+                    <li><a href="#">Shop</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+
+                <ul class="site-links float--left">
+                    <li>© 2016 GitHub, Inc.</li>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">Status</a></li>
+                    <li><a href="#">Help</a></li>
+                </ul>
+
+                <!-- <a href="#" class="logo">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        width="24" height="24" viewBox="0 0 16 16" fill="#ccc">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a> -->
+
+            </div>
+        </footer>
+    </div>
+<!-- 
+    <script>
+        function initMap() {
+
+            // 위도(Latitude), 경도(Longitude)
+            const myLatLng = {
+                lat: 37.782293,
+                lng: -122.391240
+            };
+
+            const map = new google.maps.Map(document.getElementById('map'), {
+                center: myLatLng,
+                scrollwheel: false,
+                zoom: 18
+            });
+
+            const marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                title: 'GitHub'
+            });
+        }
+    </script> -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCTQIlxBn5AfKGvsfJiormAE1esN3fcCkg&callback=initMap"
+        async defer></script>
+
+    
+</body>
+<script>
+    window.onload = function () {
+            // 캡쳐 버튼 클릭 이벤트 등록 
+            document.getElementById("btn_capture").addEventListener("click", function (e) {
+                // 마우스 커서 모양 변경 (eidt_cursor 클래스 추가) 
+                document.querySelector("body").classList.add("edit_cursor");
+                screenshot(e);
+            });
+        }
+    /* * */
+    function screenshot(e) {
+        var startX, startY;
+        var height = window.innerHeight;
+        var width = window.innerWidth;
+
+        // 배경을 어둡게 깔아주기 위한 div 객체 생성 
+        var $screenBg = document.createElement("div");
+        $screenBg.id = "screenshot_background";
+        $screenBg.style.borderWidth = "0 0 " + height + "px 0";
+        // 마우스 이동하면서 선택한 영역의 크기를 보여주기 위한 div 객체 생성 
+        var $screenshot = document.createElement("div");
+        $screenshot.id = "screenshot";
+        document.querySelector("body").appendChild($screenBg);
+        document.querySelector("body").appendChild($screenshot);
+        var selectArea = false;
+        var body = document.querySelector('body');
+        // 마우스 누르는 이벤트 함수 
+        var mousedown = function (e) {
+            e.preventDefault();
+            selectArea = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            // 이벤트를 실행하면서 이벤트 삭제 (한번만 동작하도록) 
+            body.removeEventListener("mousedown", mousedown);
+        }
+        // 마우스 누르는 이벤트 등록 
+        body.addEventListener("mousedown", mousedown);
+
+        // 클릭한 마우스 떼는 이벤트 함수 
+        var mouseup = function (e) {
+            selectArea = false;
+            // (초기화) 마우스 떼면서 마우스무브 이벤트 삭제 
+            body.removeEventListener("mousemove", mousemove);
+            // (초기화) 스크린샷을 위해 생성한 객체 삭제 
+            $screenshot.parentNode.removeChild($screenshot);
+            $screenBg.parentNode.removeChild($screenBg);
+            var x = e.clientX;
+            var y = e.clientY;
+            var top = Math.min(y, startY);
+            var left = Math.min(x, startX);
+            var width = Math.max(x, startX) - left;
+            var height = Math.max(y, startY) - top;
+
+
+            html2canvas(document.body).then(function (canvas) { //전체 화면 캡쳐 
+                // 선택 영역만큼 crop 
+                var img = canvas.getContext('2d').getImageData(left, top, width, height);
+                var c = document.createElement("canvas");
+                c.width = width;
+                c.height = height;
+                c.getContext('2d').putImageData(img, 0, 0);
+                //save(c); // crop한 이미지 저장 
+            });
+            body.removeEventListener("mouseup", mouseup);
+            // 마우스 커서 기본으로 변경 
+            document.querySelector("body").classList.remove("edit_cursor");
+        
+            //사각형 만들기
+            const canvas = document.getElementById('canvas_frmae');
+            const ctx = canvas.getContext('2d');
+            ctx.strokeRect(left, top, width, height);
+
+        }
+        body.addEventListener("mouseup", mouseup);
+        // 마우스무브 이벤트 함수 
+        function mousemove(e) {
+            var x = e.clientX;
+            var y = e.clientY;
+            $screenshot.style.left = x;
+            $screenshot.style.top = y;
+            if (selectArea) { //캡쳐 영역 선택 그림 
+                var top = Math.min(y, startY);
+                var right = width - Math.max(x, startX);
+                var bottom = height - Math.max(y, startY);
+                var left = Math.min(x, startX);
+                $screenBg.style.borderWidth = top + 'px ' + right + 'px ' + bottom + 'px ' + left + 'px';
+                console.log(left, top, width, height);
+            }
+        }
+        body.addEventListener("mousemove", mousemove);
+
+        // 캡쳐한 이미지 저장 
+        function save(canvas) {
+            if (navigator.msSaveBlob) {
+                var blob = canvas.msToBlob();
+                return navigator.msSaveBlob(blob, '파일명.png');
+            } else {
+                var el = document.getElementById("target");
+                el.href = canvas.toDataURL("image/png", 1);
+                el.download = '파일명.png';
+                el.click();
+            }
+        }
+    }
+</script>
+</html>

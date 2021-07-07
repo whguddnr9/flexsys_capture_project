@@ -1,0 +1,5 @@
+이전 코드
+    takeScreenShot 을 누를 시 전체 화면 캡처가 되며, capture 버튼을 눌렀을때 선택한 영역만큼 캡처가 진행된다.
+현재 코드
+    takeScreenShot 을 누를 시 전체 화면 캡처가 되며, capture 버튼을 눌렀을때 선택한 영역에 박스 처리를 한다.
+    capture 버튼의 위치를 우측 상단으로 변경하였고, takeScreenShot버튼은 한번 누를 시 사라진다.
