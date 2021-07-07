@@ -81,19 +81,12 @@
         const ctx_json = canvas_json.getContext('2d');
         ctx_json.strokeRect(json_left,json_top,json_width,json_height);
     }
-    
+
 </script>
 
 <script>
     //캡쳐 영역 좌표 저장할 변수
     var local_width, local_height, local_top, local_left;
-
-    var test_left = 429;
-    var test_top = 104;
-    var test_width = 490;
-    var test_height = 194;
-
-
 
     window.onload = function () {
             // 캡쳐 버튼 클릭 이벤트 등록 
@@ -103,12 +96,7 @@
                 screenshot(e);
             });
         }
-        // 변수가 저장되는지 출력
-        console.log("2_local : " + local_left, local_top, local_width, local_height);
-        //저장된 좌표대로 출력 코드 => 정상
-        const canvas_test = document.getElementById('canvas_frmae');
-        const ctx_test = canvas_test.getContext('2d');
-        ctx_test.strokeRect(test_left, test_top, test_width, test_height);
+
     /* * */
     function screenshot(e) {
         var startX, startY;
