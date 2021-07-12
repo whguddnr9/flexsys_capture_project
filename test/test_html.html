@@ -1,0 +1,66 @@
+<!--
+    작성자 : 조형욱
+    작성일 : 20210710
+    
+-->
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <title>test</title>
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="./test_js.js"></script>
+    <link rel="stylesheet" href="./test_css.css">
+ 
+    <style>
+      div.box {
+        height: 50px;
+        border: 1px solid #bcbcbc;
+        background-color: #dadada;
+      }
+    </style>
+    <script>
+      $( document ).ready( function() {
+        $( 'button.hide1' ).click( function() {
+          $( '.hide1' ).hide();
+        } );
+        $( 'button.hide2' ).click( function() {
+          $( '.box2' ).hide( 1000 );
+        } );
+        $( 'button.hide3' ).click( function() {
+          $( '.box3' ).hide( 1000, 'linear' );
+        } );
+        $( 'button.hide4' ).click( function() {
+          $( '.box4' ).hide( 1000, 'linear', function() {
+            $( this ).show( 1000 );
+          } );
+        } );
+      } );
+    </script>
+  </head>
+
+  <body>
+    <a id="target" style="display: none"></a>
+
+    <br />
+    <button id ="btn_capture">capture</button>
+    <button id = "btn_show" onclick="show_box();">show</button>
+    <canvas id="canvas_frmae"></canvas>
+
+    <p><button class="hide1">Hide</button></p>
+    <p><code>.hide();</code></p>
+    <div class="box box1"></div>
+    <p><button class="hide2">Hide</button></p>
+    <p><code>.hide( 1000 );</code></p>
+    <div class="box box2"></div>
+    <p><button class="hide3">Hide</button></p>
+    <p><code>.hide( 1000, 'linear' );</code></p>
+    <div class="box box3"></div>
+    <p><button class="hide4">Hide</button></p>
+    <p><code>.hide( 1000, 'linear', function() { $( this ).show( 1000 ); } );</code></p>
+    <div class="box box4"></div>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+ <meta charset="UTF-8">
+</head>
+<body>
+ <canvas id="main" width="500" height="500"></canvas>
+
+ 
+
+ <script> 
+
+  var canvas = document.getElementById("main");
+  var ctx = canvas.getContext("2d");
+  var bb = canvas.getBoundingClientRect();
+  var startX, startY;
+  var iX, iY;
+  var isDrag = false;
+  var iTop = 20, iLeft = 20, iWidth = 100, iHeight = 100;
+
+
+
+  ctx.fillRect( iLeft, iTop, iWidth, iHeight );
+
+ 
+
+  // 마우스 버튼 클릭 이벤트 핸들러
+  // 박스 위치이면 drag 를 시작한다.
+  function mousedown(e)
+  {
+   startX = e.clientX - bb.left;
+   startY = e.clientY - bb.top;
+
+
+
+   if( startX > iLeft && startX < ( iLeft + iWidth ) && startY > iTop && startY < ( iTop + iHeight ) )
+   {
+    isDrag = true;
+   }
+  }
+
+ 
+
+  function mousemove(e)
+  {
+   if( isDrag )
+   {
+    iX = e.clientX - bb.left;
+    iY = e.clientY - bb.top;
+
+    draw();
+   }
+  }
+
+ 
+
+  function mouseup(e)
+  {
+   if( isDrag )
+   {
+    iX = e.clientX - bb.left;
+    iY = e.clientY - bb.top;
+
+    isDrag = false;
+    draw();
+   }
+  }
+
+ 
+
+  // 캔버스의 마우스 이벤트 핸들러 등록
+  canvas.addEventListener( "mousemove", mousemove );
+  canvas.addEventListener( "mousedown", mousedown );
+  canvas.addEventListener( "mouseup", mouseup );
+
+ 
+
+  // 박스를 그린다.
+  function draw()
+  {
+   ctx.clearRect(0,0,canvas.width,canvas.height);
+   ctx.fillRect( iLeft + iX - startX, iTop + iY - startY, iWidth, iHeight );
+
+​
+
+   if( isDrag == false )
+   {
+    iLeft = iLeft + iX - startX;
+    iTop = iTop + iY - startY;
+   }
+  }
+
+
+
+ </script>
+</body>
+</html> 
