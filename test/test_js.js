@@ -1,3 +1,8 @@
+var isDrag = false;
+var iX, iY;
+var startX, startY;
+
+    
     //canvas창 크기 브라우저 크기에 맞게 늘리기 위한 코드
     window.onload = function(){
         var _canvas;
@@ -12,9 +17,9 @@
 
     
     //저장된 상자 출력
+    var json_width, json_height, json_top, json_left;
 
-/*     function show_box() {
-        var json_width, json_height, json_top, json_left;
+    function show_box() {
 
         var json_box = JSON.parse(sessionStorage.getItem('json_box'));
         json_top = json_box.top_j;
@@ -24,7 +29,7 @@
         const canvas_json = document.getElementById('canvas_frmae');
         const ctx_json = canvas_json.getContext('2d');
         ctx_json.strokeRect(json_left,json_top,json_width,json_height);     
-    } */
+    }
 
 
     //캡쳐 영역 좌표 저장할 변수
@@ -46,13 +51,17 @@
 
         var min_y = json_box.top_j;
         var min_x = json_box.left_j;
-        var max_y = json_bpx.height_j;
+        var max_y = json_box.height_j;
         var max_x = json_box.width_j;
+
+        if (min_x <= e.clickX && e.clientX <= max_x && min_y <= e.clientY && e.clientY <= max_y){
+            console.log("good");
+        }
         
 
     }
     function screenshot(e) {
-        var startX, startY;
+        // var startX, startY;
         var height = window.innerHeight;
         var width = window.innerWidth;
 
@@ -75,9 +84,17 @@
             startY = e.clientY;
             // 이벤트를 실행하면서 이벤트 삭제 (한번만 동작하도록) 
             body.removeEventListener("mousedown", mousedown);
+
+
+/*             json_width, json_height, json_top, json_left;
+            if( startX > json_left && startX < ( json_left + json_width ) && startY > json_top && startY < ( json_top + json_height ) )
+            {
+             isDrag = true;
+            } */
+
         }
 
-        // 마우스 누르는 이벤트 등록 x`
+        // 마우스 누르는 이벤트 등록 
         body.addEventListener("mousedown", mousedown);
 
         // 클릭한 마우스 떼는 이벤트 함수 
@@ -114,8 +131,6 @@
             json_height = json_box.height_j;
 
 
-
-            
             html2canvas(document.body).then(function (canvas) { //전체 화면 캡쳐 
                 // 선택 영역만큼 crop 
                 var img = canvas.getContext('2d').getImageData(left, top, width, height);
@@ -152,6 +167,21 @@
             }
         }
         body.addEventListener("mousemove", mousemove);
+
+        //상자를 이동시킬 draw 함수
+        function draw(){
+         const canvas_draw = document.getElementById('canvas_frmae');
+         const ctx_draw = canvas_draw.getContext('2d');
+         ctx_draw.clearRect(0,0,canvas.width,canvas.height);
+         ctx_draw.strokeRect( json_left + iX - startX, json_top + iY - startY, json_width, json_height );
+      
+         if( isDrag == false )
+         {
+          json_left = iLeft + iX - startX;
+          json_top = iTop + iY - startY;
+         }
+        }
+        body.addEventListener("draw", draw);
 
         // 캡쳐한 이미지 저장 
         function save(canvas) {

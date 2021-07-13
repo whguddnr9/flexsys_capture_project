@@ -20,7 +20,7 @@
 
 
 
-  ctx.fillRect( iLeft, iTop, iWidth, iHeight );
+  ctx.strokeRect( iLeft, iTop, iWidth, iHeight );
 
  
 
@@ -79,9 +79,7 @@
   function draw()
   {
    ctx.clearRect(0,0,canvas.width,canvas.height);
-   ctx.fillRect( iLeft + iX - startX, iTop + iY - startY, iWidth, iHeight );
-
-​
+   ctx.strokeRect( iLeft + iX - startX, iTop + iY - startY, iWidth, iHeight );
 
    if( isDrag == false )
    {
