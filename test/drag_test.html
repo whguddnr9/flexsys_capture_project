@@ -32,8 +32,9 @@
     </script>
 
     <script>
-        var top, left, height, width;
-        var json_box = JSON.parse(sessionStorage.getItem('json_box'));
+        //var top, left, height, width;
+        var local_top, local_left, local_height, local_width;
+        var j_top, j_left, j_height, j_width;
         
 
         //cavas에 사각형 그리는 코드
@@ -58,6 +59,9 @@
             if (!drag) {
                 return ;
             }
+            if(isDrag){
+                return ;
+            }
             var nowX = me. offsetX ;
             var nowY = me. offsetY ;
             canvasDraw (nowX,nowY);
@@ -74,7 +78,23 @@
     }
 
     function mUp(me) {
+        var x = me.clientX;
+        var y = me.clientY;
+
+        var top = Math.min(y, startY);
+        var left = Math.min(x, startX);
+        var width = Math.max(x, startX) - left;
+        var height = Math.max(y, startY) - top;
+        local_top = top;
+        local_left = left;
+        local_width = width;
+        local_height = height;
+        console.log("top,left,width,height"+top,left,width,height);
+        console.log("local => top,left,width,height"+local_top,local_left,local_width,local_height);
+
         drag = false ; //마우스를 떼었을 때 그리기 중지
+        set_json();
+
     }
 
     function mOut(me) {
@@ -87,21 +107,20 @@
         context.strokeRect(startX,startY,currentX-startX,currentY-startY) //시작점과 끝점의 좌표 정보로 사각형을 그려준다.
         //json변수에 저장해서 
 
-        top = Math.min(currentY, startY);
-        left = Math.min(currentX, startX);
-        width = Math.max(currentX, startX) - left;
-        height = Math.max(currentY, startY) - top;
+
+
+        console.log(startX,startY,currentX-startX,currentY-startY);
 
     }
     //session 변수값과 로컬 변수화를 동기화
-    function set_get_json() {
-        sessionStorage.setItem('json_box', JSON.stringify({top_j : top, left_j: left, width_j: width, height_j: height}));
+    function set_json() {
+        sessionStorage.setItem('json_box', JSON.stringify({top_j : local_top, left_j: local_left, width_j: local_width, height_j: local_height}));
         console.log(JSON.parse(sessionStorage.getItem('json_box')));
         var json_box = JSON.parse(sessionStorage.getItem('json_box'));
-        top = json_box.top_j;
-        left = json_box.left_j;
-        width = json_box.width_j;
-        height = json_box.height_j;        
+        j_top = json_box.top_j;
+        j_left = json_box.left_j;
+        j_width = json_box.width_j;
+        j_height = json_box.height_j;
     }
 
 
@@ -112,9 +131,8 @@
         var iX, iY;
         var isDrag = false;
         
-        set_get_json();
 
-        ctx.strokeRect(left, top, width, height );
+        ctx.strokeRect(local_left, local_top, local_width, local_height );
 
     // 마우스 버튼 클릭 이벤트 핸들러
     // 박스 위치이면 drag 를 시작한다.
@@ -122,7 +140,7 @@
         startX = e.clientX - bb.left;
         startY = e.clientY - bb.top;
 
-        if( startX > left && startX < ( left + width ) && startY > top && startY < ( top + width ) ) {
+        if( startX > j_left && startX < ( j_left + j_width ) && startY > j_top && startY < ( j_top + j_width ) ) {
         isDrag = true;
         }
     }
@@ -131,7 +149,7 @@
       if( isDrag ) {
         iX = e.clientX - bb.left;
         iY = e.clientY - bb.top;
-
+        console.log("iX iY "+iX,iY)
         draw();
         }
     }
@@ -152,10 +170,10 @@
 
     // 박스를 그린다.
     function draw() {
-        left=left + iX - startX;
-        top=top + iY - startY;
+        local_left=local_left + iX - startX;
+        local_top=local_top + iY - startY;
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.strokeRect( left, top, width, height );
+        ctx.strokeRect( local_left, local_top, local_width, local_height );
 
 /*         if( isDrag == false ) {
             iLeft = iLeft + iX - startX;
