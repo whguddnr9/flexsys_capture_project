@@ -150,7 +150,7 @@
         startX = e.clientX - bb.left;
         startY = e.clientY - bb.top;
 
-        if( startX > j_left && startX < ( j_left + j_width ) && startY > j_top && startY < ( j_top + j_width ) ) {
+        if( startX > local_left && startX < ( local_left + local_width ) && startY > local_top && startY < ( local_top + local_width ) ) {
             mv_Drag = true;
             crt_drag = false;
         }
@@ -173,11 +173,11 @@
         mv_Drag = false;
         draw();
         }
-/*         local_top = m_top;
+        local_top = m_top;
         local_left = m_left;
         local_width = m_width;
         local_height = m_height;        
-        set_json();   */
+        set_json();  
     }
 
     // 캔버스의 마우스 이벤트 핸들러 등록
