@@ -3,10 +3,11 @@
     작성일 : 20210710
     
     수정사항 : 
-    [20210710] 기존 코드에서 상자 클릭 이벤트 작성
-    [20210712] 새로운 코드를 작성하여 상자를 움직이는 코드 작성
+    [20210710]  기존 코드에서 상자 클릭 이벤트 작성
+    [20210712]  새로운 코드를 작성하여 상자를 움직이는 코드 작성
     [20210713]  상자 움직이는 코드에 상자를 생성하는 코드 작성하여 병합
-                ㅇ
+    [20210714]  상자를 클릭했을때 생기는 이동 오류 해결중..
+                상자를 이동한 후 사각형이 다시 그려지는 오류 해결중..
 -->
 
 <!DOCTYPE html>
@@ -126,6 +127,8 @@
 
 
     //canvas에 있는 사각형 움직이는 코드
+
+        var m_left, m_top, m_width, m_height;
         var ctx = canvas.getContext("2d");
         var bb = canvas.getBoundingClientRect();
         var startX, startY;
@@ -171,10 +174,16 @@
 
     // 박스를 그린다.
     function draw() {
-        local_left=local_left + iX - startX;
-        local_top=local_top + iY - startY;
+        m_top=local_top
+        m_left=local_left;
+        m_width=local_width;
+        m_height=local_height;
+        
+        
+        m_left=m_left + iX - startX;
+        m_top=m_top + iY - startY;
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.strokeRect( local_left, local_top, local_width, local_height );
+        ctx.strokeRect( m_left, m_top, m_width, m_height );
 
 /*         if( isDrag == false ) {
             iLeft = iLeft + iX - startX;
