@@ -44,7 +44,7 @@
 
         context.lineWidth = 3; // 컨버스에 그리는 라인의 두께 설정
         context.strokeStyle = "#006cb7"
-        var drag = false ;
+        var crt_drag = false ;
         canvas.addEventListener ( "mousedown" , function (me) {
             mDown (me)}, false );
         canvas.addEventListener ( "mousemove" , function (me) {
@@ -57,10 +57,10 @@
 
         function mMove(me) {
     //drag가 false 일때는 return(return 아래는 실행 안함)
-            if (!drag) {
+            if (!crt_drag) {
                 return ;
             }
-            if(isDrag){
+            if(mv_Drag){
                 return ;
             }
             var nowX = me. offsetX ;
@@ -75,7 +75,7 @@
         startY = me.offsetY;
         stX = me. offsetX ; //눌렀을 때 현재 마우스 X좌표를 stX에 담음
         stY = me. offsetY ; //눌렀을 때 현재 마우스 Y좌표를 stY에 담음
-        drag = true ; //그림 그리기는 그리는 상태로 변경
+        crt_drag = true ; //그림 그리기는 그리는 상태로 변경
     }
 
     
@@ -94,13 +94,13 @@
         console.log("top,left,width,height"+top,left,width,height);
         console.log("local => top,left,width,height"+local_top,local_left,local_width,local_height);
 
-        drag = false ; //마우스를 떼었을 때 그리기 중지
+        crt_drag = false ; //마우스를 떼었을 때 그리기 중지
         set_json();
 
     }
 
     function mOut(me) {
-        drag = false ; //마우스가 캔버스 밖으로 벗어났을 때 그리기 중지
+        crt_drag = false ; //마우스가 캔버스 밖으로 벗어났을 때 그리기 중지
     }
 
     function canvasDraw(currentX,currentY) {
@@ -133,7 +133,7 @@
         var bb = canvas.getBoundingClientRect();
         var startX, startY;
         var iX, iY;
-        var isDrag = false;
+        var mv_Drag = false;
         
 
         ctx.strokeRect(local_left, local_top, local_width, local_height );
@@ -145,12 +145,13 @@
         startY = e.clientY - bb.top;
 
         if( startX > j_left && startX < ( j_left + j_width ) && startY > j_top && startY < ( j_top + j_width ) ) {
-        isDrag = true;
+            mv_Drag = true;
+            crt_drag = false;
         }
     }
 
     function mousemove(e) {
-      if( isDrag ) {
+      if( mv_Drag ) {
         iX = e.clientX - bb.left;
         iY = e.clientY - bb.top;
         console.log("iX iY "+iX,iY)
@@ -159,7 +160,7 @@
     }
 
     function mouseup(e) {
-        if( isDrag ) {
+        if( mv_Drag ) {
         iX = e.clientX - bb.left;
         iY = e.clientY - bb.top;
         isDrag = false;
