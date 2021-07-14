@@ -71,6 +71,9 @@
         }
 
     function mDown(me) {
+        if(mv_Drag){
+            return ;
+        }
         startX = me.offsetX;
         startY = me.offsetY;
         stX = me. offsetX ; //눌렀을 때 현재 마우스 X좌표를 stX에 담음
@@ -80,13 +83,19 @@
 
     
     function mUp(me) {
+        if(mv_Drag){
+            return ;
+        }
         var x = me.clientX;
         var y = me.clientY;
 
+        //박스의 크기 및 좌표 저장
         var top = Math.min(y, startY);
         var left = Math.min(x, startX);
         var width = Math.max(x, startX) - left;
         var height = Math.max(y, startY) - top;
+
+        //전역변수에 이를 저장.
         local_top = top;
         local_left = left;
         local_width = width;
@@ -107,9 +116,6 @@
 
         context.clearRect(0,0,context.canvas.width,context.canvas.height) //설정된 영역만큼 캔버스에서 지움
         context.strokeRect(startX,startY,currentX-startX,currentY-startY) //시작점과 끝점의 좌표 정보로 사각형을 그려준다.
-        //json변수에 저장해서 
-
-
 
         console.log(startX,startY,currentX-startX,currentY-startY);
 
@@ -155,6 +161,7 @@
         iX = e.clientX - bb.left;
         iY = e.clientY - bb.top;
         console.log("iX iY "+iX,iY)
+        console.log(crt_drag);
         draw();
         }
     }
@@ -163,9 +170,14 @@
         if( mv_Drag ) {
         iX = e.clientX - bb.left;
         iY = e.clientY - bb.top;
-        isDrag = false;
+        mv_Drag = false;
         draw();
         }
+/*         local_top = m_top;
+        local_left = m_left;
+        local_width = m_width;
+        local_height = m_height;        
+        set_json();   */
     }
 
     // 캔버스의 마우스 이벤트 핸들러 등록
@@ -173,7 +185,7 @@
     canvas.addEventListener( "mousedown", mousedown );
     canvas.addEventListener( "mouseup", mouseup );
 
-    // 박스를 그린다.
+    //이동된 박스를 그린다.
     function draw() {
         m_top=local_top
         m_left=local_left;
@@ -186,68 +198,14 @@
         ctx.clearRect(0,0,canvas.width,canvas.height);
         ctx.strokeRect( m_left, m_top, m_width, m_height );
 
+  
+
 /*         if( isDrag == false ) {
             iLeft = iLeft + iX - startX;
             iTop = iTop + iY - startY;
         } */
     }
 </script>
-
-<!-- 
-    <script>
-        var canvas = document.getElementById ("canvas_frame"); 
-        var context = canvas.getContext ("2d");
-        var startX, startY, stX, stY;
-
-        var drag = false;
-
-        function mDown(e) {
-            startX = e.offsetX;
-            startY = e.offsetY;
-            stX = e.offsetX;
-            stY = e.offsetY;
-
-            drag = true;
-        }        
-
-        function mMove(e) {
-            if (!drag){
-                return ;
-            }
-
-            var nowX = e.offsetX;
-            var nowY = e.offsetY;
-
-            canvasDraw(nowX,nowY);
-            
-            stX = nowX;
-            stY = nowY;
-        }
-
-        function mUp(e) {
-            endX = e.offsetX;
-            enxY = e.offsetY;
-
-            drag = false;
-        }
-        function canvasDraw(currentX, currentY) {
-            context.clearRect(0,0,context.cavas.width,context.canvas.height);
-            context.strokeRect(startX, startY, currentX-startX, currentY-startY);
-        }
-
-        function checkBox(e) {
-
-        }
-        canvas.addEventListener ( "mousedown" , function (e) {
-        mDown (e)}, false );
-        canvas.addEventListener ("mouseup", function (e) {
-            mUp (e)}, false);
-        canvas.addEventListener ("mousemove", function (e) {
-            mMove (e)}, false);
-
-
-    </script>
- -->
  
 
  
