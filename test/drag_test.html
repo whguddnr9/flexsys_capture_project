@@ -86,7 +86,6 @@
         stY = me. offsetY ; //눌렀을 때 현재 마우스 Y좌표를 stY에 담음
         crt_drag = true ; //그림 그리기는 그리는 상태로 변경
     }
-
     
     function mUp(me) {
         if(mv_Drag){
@@ -188,6 +187,7 @@
         draw();
         }
 
+        save_local(m_left,m_top,m_width,m_height);
 /*         local_top = m_top;
         local_left = m_left;
         local_width = m_width;
@@ -196,7 +196,9 @@
         //m_ 변수들이 어디에서 값이 저장되는지 확인
 
         console.log("drag box : "+m_top, m_left, m_width, m_height);
-        set_json(m_top,m_left,m_width,m_height);  
+
+        //json에서 값을 저장하고 값을 로컬 변수에 저장시켜 줄 함수를 작성해야할듯
+        //set_json(m_top,m_left,m_width,m_height);  
         console.log("move box");
     }
 
@@ -227,6 +229,13 @@
             iLeft = iLeft + iX - startX;
             iTop = iTop + iY - startY;
         } */
+    }
+
+    function save_local(s_left, s_top, s_width, s_height) {
+       local_left = s_left;
+       local_top = s_top;
+       local_width = s_width;
+       local_height = s_height; 
     }
 </script>
  
