@@ -1,6 +1,9 @@
 <!--
     작성자 : 조형욱
     작성일 : 20210710
+
+    7월 둘째주 목표 : 사각형을 그리고 사각형을 눌렀을때 사각형 이동 가능하게 & 사각형 이외의 공간에 드래그 할 때 사각형이 새로 그려지게
+    7월 셋째주 목표 : 사각형 모서리 부분을 클릭 했을 시 사각형의 크기를 변경할 수 있게 제한구역을 벗어나지 않게
     
     수정사항 : 
     [20210710]  기존 코드에서 상자 클릭 이벤트 작성
@@ -8,6 +11,9 @@
     [20210713]  상자 움직이는 코드에 상자를 생성하는 코드 작성하여 병합
     [20210714]  상자를 클릭했을때 생기는 이동 오류 해결중..
                 상자를 이동한 후 사각형이 다시 그려지는 오류 해결중..
+                사각형 이동 변수를 따로 만들어서 저장 후 그리기
+    [20210716]  캡처 버튼을 눌렀을때 사각형이 그려질 수 있게 바꾸기.
+    
 -->
 
 <!DOCTYPE html>
@@ -104,7 +110,8 @@
         console.log("local => top,left,width,height"+local_top,local_left,local_width,local_height);
 
         crt_drag = false ; //마우스를 떼었을 때 그리기 중지
-        set_json();
+        set_json(top,left,width,height);
+        console.log("create box")
 
     }
 
@@ -121,25 +128,25 @@
 
     }
     //session 변수값과 로컬 변수화를 동기화
-    function set_json() {
-        sessionStorage.setItem('json_box', JSON.stringify({top_j : local_top, left_j: local_left, width_j: local_width, height_j: local_height}));
+    function set_json(set_top,set_left,set_width,set_height) {
+        sessionStorage.setItem('json_box', JSON.stringify({top_j : set_top, left_j: set_left, width_j: set_width, height_j: set_height}));
         console.log(JSON.parse(sessionStorage.getItem('json_box')));
         var json_box = JSON.parse(sessionStorage.getItem('json_box'));
-        j_top = json_box.top_j;
-        j_left = json_box.left_j;
-        j_width = json_box.width_j;
-        j_height = json_box.height_j;
+        j_top = json_box.top_j;         
+        j_left = json_box.left_j;       
+        j_width = json_box.width_j;     
+        j_height = json_box.height_j;   
     }
 
 
     //canvas에 있는 사각형 움직이는 코드
 
-        var m_left, m_top, m_width, m_height;
-        var ctx = canvas.getContext("2d");
-        var bb = canvas.getBoundingClientRect();
-        var startX, startY;
-        var iX, iY;
-        var mv_Drag = false;
+    var m_left, m_top, m_width, m_height;
+    var ctx = canvas.getContext("2d");
+    var bb = canvas.getBoundingClientRect();
+    var startX, startY;
+    var iX, iY;
+    var mv_Drag = false;
         
 
         ctx.strokeRect(local_left, local_top, local_width, local_height );
@@ -147,6 +154,7 @@
     // 마우스 버튼 클릭 이벤트 핸들러
     // 박스 위치이면 drag 를 시작한다.
     function mousedown(e) {
+        // body.removeEventListener("mousedown", mDown);
         startX = e.clientX - bb.left;
         startY = e.clientY - bb.top;
 
@@ -154,9 +162,12 @@
             mv_Drag = true;
             crt_drag = false;
         }
+        console.log("mv_Drag = "+mv_Drag);
+        
     }
 
     function mousemove(e) {
+        console.log("mousemoce function ");
       if( mv_Drag ) {
         iX = e.clientX - bb.left;
         iY = e.clientY - bb.top;
@@ -167,17 +178,26 @@
     }
 
     function mouseup(e) {
+        if(crt_drag){
+            return ;
+        }
         if( mv_Drag ) {
         iX = e.clientX - bb.left;
         iY = e.clientY - bb.top;
         mv_Drag = false;
         draw();
         }
-        local_top = m_top;
+
+/*         local_top = m_top;
         local_left = m_left;
         local_width = m_width;
-        local_height = m_height;        
-        set_json();  
+        local_height = m_height; */
+
+        //m_ 변수들이 어디에서 값이 저장되는지 확인
+
+        console.log("drag box : "+m_top, m_left, m_width, m_height);
+        set_json(m_top,m_left,m_width,m_height);  
+        console.log("move box");
     }
 
     // 캔버스의 마우스 이벤트 핸들러 등록
@@ -187,6 +207,8 @@
 
     //이동된 박스를 그린다.
     function draw() {
+        console.log("draw function");
+
         m_top=local_top
         m_left=local_left;
         m_width=local_width;
@@ -197,6 +219,7 @@
         m_top=m_top + iY - startY;
         ctx.clearRect(0,0,canvas.width,canvas.height);
         ctx.strokeRect( m_left, m_top, m_width, m_height );
+        console.log("draw box: "+m_top, m_left, m_width, m_height);
 
   
 
