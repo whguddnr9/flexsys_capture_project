@@ -53,7 +53,72 @@
         context.lineWidth = 3; // 컨버스에 그리는 라인의 두께 설정
         context.strokeStyle = "#006cb7"
         var crt_drag = false ;
+        canvas.addEventListener ( "mousedown" , function (me) {
+            mDown (me)}, false );
+        canvas.addEventListener ( "mousemove" , function (me) {
+            mMove (me)}, false );
+        canvas.addEventListener ( "mouseup" , function (me) {
+            mUp (me)}, false );
+        canvas.addEventListener ( "mouseout" , function (me) {
+            mOut (me)}, false );
 
+
+        function mMove(me) {
+            // console.log("mMove(create_box)");
+    //drag가 false 일때는 return(return 아래는 실행 안함)
+            if (!crt_drag) {
+                return ;
+            }
+            if(mv_Drag){
+                return ;
+            }
+            var nowX = me. offsetX ;
+            var nowY = me. offsetY ;
+            canvasDraw (nowX,nowY);
+            stX = nowX;
+            stY = nowY;
+        }
+
+    function mDown(me) {
+        if(mv_Drag){
+            return ;
+        }
+        startX = me.offsetX;
+        startY = me.offsetY;
+        stX = me. offsetX ; //눌렀을 때 현재 마우스 X좌표를 stX에 담음
+        stY = me. offsetY ; //눌렀을 때 현재 마우스 Y좌표를 stY에 담음
+        crt_drag = true ; //그림 그리기는 그리는 상태로 변경
+    }
+    
+    function mUp(me) {
+        console.log("mUP(create box) before 'return' : "+crt_drag);
+
+        if(mv_Drag){
+            return ;
+        }
+        var x = me.clientX;
+        var y = me.clientY;
+
+        //박스의 크기 및 좌표 저장
+        var top = Math.min(y, startY);
+        var left = Math.min(x, startX);
+        var width = Math.max(x, startX) - left;
+        var height = Math.max(y, startY) - top;
+
+        //전역변수에 이를 저장.
+        local_top = top;
+        local_left = left;
+        local_width = width;
+        local_height = height;
+        console.log("top,left,width,height"+top,left,width,height);
+        console.log("local => top,left,width,height"+local_top,local_left,local_width,local_height);
+
+        crt_drag = false ; //마우스를 떼었을 때 그리기 중지
+        set_json(top,left,width,height);
+        console.log("mUP(create box) after 'return' : "+crt_drag);
+
+
+    }
 
     function mOut(me) {
         crt_drag = false ; //마우스가 캔버스 밖으로 벗어났을 때 그리기 중지
@@ -102,96 +167,44 @@
             mv_Drag = true;
             crt_drag = false;
         }
-        if(mv_Drag){
-            startX = e.clientX - bb.left;
-            startY = e.clientY - bb.top;
-            console.log("mv_Drag = "+mv_Drag);
-        }
-        else {
-            startX = e.offsetX;
-            startY = e.offsetY;
-            stX = e. offsetX ; //눌렀을 때 현재 마우스 X좌표를 stX에 담음
-            stY = e. offsetY ; //눌렀을 때 현재 마우스 Y좌표를 stY에 담음
-            crt_drag = true ; //그림 그리기는 그리는 상태로 변경
-        }
+        console.log("mv_Drag = "+mv_Drag);
+        
     }
 
     function mousemove(e) {
-        // console.log("mousemove function ");
-        if( mv_Drag ) {
-            console.log("mv_Drag(move_box) : " + mv_Drag);
-            iX = e.clientX - bb.left;
-            iY = e.clientY - bb.top;
-            console.log("iX iY "+iX,iY)
-            console.log(crt_drag);
-            draw();
-            }
-        if(crt_drag){
-            console.log("mMove(create_box)");
-            //drag가 false 일때는 return(return 아래는 실행 안함)
-            if (!crt_drag) {
-                return ;
-            }
-            if(mv_Drag){
-                return ;
-            }
-            var nowX = e. offsetX ;
-            var nowY = e. offsetY ;
-            canvasDraw (nowX,nowY);
-            stX = nowX;
-            stY = nowY;
+        console.log("mousemoce function ");
+      if( mv_Drag ) {
+        iX = e.clientX - bb.left;
+        iY = e.clientY - bb.top;
+        console.log("iX iY "+iX,iY)
+        console.log(crt_drag);
+        draw();
         }
-
     }
 
     function mouseup(e) {
-        //상자 옮기는 코드
-        if( mv_Drag ) {
-            iX = e.clientX - bb.left;
-            iY = e.clientY - bb.top;
-            mv_Drag = false;
-            draw();
-
-            local_top = m_top;
-            local_left = m_left;
-            local_width = m_width;
-            local_height = m_height;
-
-            //m_ 변수들이 어디에서 값이 저장되는지 확인
-
-            console.log("drag box : "+m_top, m_left, m_width, m_height);
-        }
-        //상자 만드는 코드
         if(crt_drag){
-                        
-            console.log("mUP(create box) before 'return' : "+crt_drag);
-
-            if(mv_Drag){
-                return ;
-            }
-            var x = e.clientX;
-            var y = e.clientY;
-
-            //박스의 크기 및 좌표 저장
-            var top = Math.min(y, startY);
-            var left = Math.min(x, startX);
-            var width = Math.max(x, startX) - left;
-            var height = Math.max(y, startY) - top;
-
-            //전역변수에 이를 저장.
-            local_top = top;
-            local_left = left;
-            local_width = width;
-            local_height = height;
-            console.log("top,left,width,height"+top,left,width,height);
-            console.log("local => top,left,width,height"+local_top,local_left,local_width,local_height);
-
-            crt_drag = false ; //마우스를 떼었을 때 그리기 중지
-            set_json(top,left,width,height);
-            console.log("mUP(create box) after 'return' : "+crt_drag);
+            return ;
         }
+        if( mv_Drag ) {
+        iX = e.clientX - bb.left;
+        iY = e.clientY - bb.top;
+        mv_Drag = false;
+        draw();
+        }
+
+        // save_local(m_left,m_top,m_width,m_height);
+/*         local_top = m_top;
+        local_left = m_left;
+        local_width = m_width;
+        local_height = m_height; */
+
+        //m_ 변수들이 어디에서 값이 저장되는지 확인
+
+        console.log("drag box : "+m_top, m_left, m_width, m_height);
 
         //json에서 값을 저장하고 값을 로컬 변수에 저장시켜 줄 함수를 작성해야할듯
+        //set_json(m_top,m_left,m_width,m_height);  
         console.log("move box");
     }
 
@@ -199,8 +212,7 @@
     canvas.addEventListener( "mousemove", mousemove );
     canvas.addEventListener( "mousedown", mousedown );
     canvas.addEventListener( "mouseup", mouseup );
-    canvas.addEventListener ( "mouseout" , function (me) {
-            mOut (me)}, false );
+
     //이동된 박스를 그린다.
     function draw() {
         console.log("draw function");
@@ -216,6 +228,13 @@
         ctx.clearRect(0,0,canvas.width,canvas.height);
         ctx.strokeRect( m_left, m_top, m_width, m_height );
         console.log("draw box: "+m_top, m_left, m_width, m_height);
+
+  
+
+/*         if( isDrag == false ) {
+            iLeft = iLeft + iX - startX;
+            iTop = iTop + iY - startY;
+        } */
     }
 
     function save_local(s_left, s_top, s_width, s_height) {
