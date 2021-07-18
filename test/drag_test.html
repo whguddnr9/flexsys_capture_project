@@ -15,32 +15,31 @@
     [20210716]  캡처 버튼을 눌렀을때 사각형이 그려질 수 있게 바꾸기.
                 값이 local에 저장이 안되는 문제 발생.. 이를 해결중.. -> 로컬에 저장하는 변수만 빼면 옮기는 코드는 작동
                 코드 단순화 작업 진행 코드 다시 작성.
+                박스 이동 및 생성 완료
+    [20210717]  canvas영역 밖으로 이동 못하게 하는 코드
     
 -->
 
 <!DOCTYPE html>
 <html>
 <head lang="en">
- <meta charset="UTF-8">
- <link rel="stylesheet" href="./test_css.css">
- <title>drag_test</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="./test_css.css">
+<title>drag_test</title>
 </head>
 <body>
-    안녕하세요
     <canvas id="canvas_frame"></canvas>
     <button id="btn_capture">capture</button>
 
 
     <script>        //canvas 크기 최대화
-        var _canvas;
+        var _canvas;        //canvas 객체를 받아올 변수 생성
         _canvas = document.querySelector("#canvas_frame");        
         _canvas.width = window.innerWidth;
         _canvas.height = window.innerHeight;
         console.log("height"+window.innerHeight);
         console.log("width"+window.innerWidth);    
-    </script>
 
-    <script>
         //var top, left, height, width;
         var local_top, local_left, local_height, local_width;
         var j_top, j_left, j_height, j_width;
@@ -55,8 +54,10 @@
         var crt_drag = false ;
 
 
-    function mOut(me) {
-        crt_drag = false ; //마우스가 캔버스 밖으로 벗어났을 때 그리기 중지
+    function mOut(e) {
+        e.offsetX
+
+        // crt_drag = false ; //마우스가 캔버스 밖으로 벗어났을 때 그리기 중지
     }
 
     function canvasDraw(currentX,currentY) {
@@ -98,7 +99,9 @@
         startX = e.clientX - bb.left;
         startY = e.clientY - bb.top;
 
-        if( startX > local_left && startX < ( local_left + local_width ) && startY > local_top && startY < ( local_top + local_width ) ) {
+        console.log("mousedown : "+startX, startY);
+
+        if( startX > local_left && startX < ( local_left + local_width ) && startY > local_top && startY < ( local_top + local_height ) ) {
             mv_Drag = true;
             crt_drag = false;
         }
@@ -163,7 +166,7 @@
         }
         //상자 만드는 코드
         if(crt_drag){
-                        
+
             console.log("mUP(create box) before 'return' : "+crt_drag);
 
             if(mv_Drag){
@@ -213,6 +216,19 @@
         
         m_left=m_left + iX - startX;
         m_top=m_top + iY - startY;
+/* 
+        if(m_left <= 0){
+            m_left = 0;
+        }
+        if(m_left >= _canvas.width) {
+            m_left = _canvas.width;
+        }
+        if (m_height <= 0) {
+            m_height = 0;
+        }
+        if (m_height >= _canvas.height) {
+            m_height = _canvas.height;
+        } */
         ctx.clearRect(0,0,canvas.width,canvas.height);
         ctx.strokeRect( m_left, m_top, m_width, m_height );
         console.log("draw box: "+m_top, m_left, m_width, m_height);
