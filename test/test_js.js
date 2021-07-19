@@ -170,16 +170,15 @@ var startX, startY;
 
         //상자를 이동시킬 draw 함수
         function draw(){
-         const canvas_draw = document.getElementById('canvas_frmae');
-         const ctx_draw = canvas_draw.getContext('2d');
-         ctx_draw.clearRect(0,0,canvas.width,canvas.height);
-         ctx_draw.strokeRect( json_left + iX - startX, json_top + iY - startY, json_width, json_height );
-      
-         if( isDrag == false )
-         {
-          json_left = iLeft + iX - startX;
-          json_top = iTop + iY - startY;
-         }
+            const canvas_draw = document.getElementById('canvas_frmae');
+            const ctx_draw = canvas_draw.getContext('2d');
+            ctx_draw.clearRect(0,0,canvas.width,canvas.height);
+            ctx_draw.strokeRect( json_left + iX - startX, json_top + iY - startY, json_width, json_height );
+        
+            if( isDrag == false ) {
+                json_left = iLeft + iX - startX;
+                json_top = iTop + iY - startY;
+            }
         }
         body.addEventListener("draw", draw);
 
