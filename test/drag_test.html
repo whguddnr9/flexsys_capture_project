@@ -38,11 +38,14 @@
         _canvas.width = window.innerWidth;
         _canvas.height = window.innerHeight;
         console.log("height"+window.innerHeight);
-        console.log("width"+window.innerWidth);    
+        console.log("width"+window.innerWidth);  
 
         //var top, left, height, width;
         var local_top, local_left, local_height, local_width;
         var j_top, j_left, j_height, j_width;
+
+        var t_top, t_right, t_bottom, t_left;
+
         
 
         //cavas에 사각형 그리는 코드
@@ -186,6 +189,9 @@
             local_left = left;
             local_width = width;
             local_height = height;
+
+
+
             console.log("top,left,width,height"+top,left,width,height);
             console.log("local => top,left,width,height"+local_top,local_left,local_width,local_height);
 
@@ -198,6 +204,17 @@
         console.log("move box");
     }
 
+    function box_out(e){
+        var x = e.clientX;
+        var y = e.clientY;
+
+        var top = Math.min(y, startY);
+        var right = width - Math.max(x, startX);
+        var bottom = height - Math.max(y, startY);
+        var left = Math.min(x, startX);
+
+
+    }
     // 캔버스의 마우스 이벤트 핸들러 등록
     canvas.addEventListener( "mousemove", mousemove );
     canvas.addEventListener( "mousedown", mousedown );
@@ -216,7 +233,7 @@
         
         m_left=m_left + iX - startX;
         m_top=m_top + iY - startY;
-/* 
+
         if(m_left <= 0){
             m_left = 0;
         }
@@ -228,7 +245,8 @@
         }
         if (m_height >= _canvas.height) {
             m_height = _canvas.height;
-        } */
+        }
+
         ctx.clearRect(0,0,canvas.width,canvas.height);
         ctx.strokeRect( m_left, m_top, m_width, m_height );
         console.log("draw box: "+m_top, m_left, m_width, m_height);
