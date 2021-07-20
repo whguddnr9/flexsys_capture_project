@@ -18,6 +18,7 @@
                 박스 이동 및 생성 완료
     [20210717]  canvas영역 밖으로 이동 못하게 하는 코드
     [20210719]  canavs 영역밖으로 박스 이동 못하게 하는 코드 완료.
+    [20210720]  모서리 부분 클릭시 상자 크기 변경 코드 진행중.
     
 -->
 
@@ -41,13 +42,17 @@
         console.log("height"+window.innerHeight);
         console.log("width"+window.innerWidth);  
 
-        //var top, left, height, width;
+        //로컬변수, json변수 선언 
         var local_top, local_left, local_height, local_width;
         var j_top, j_left, j_height, j_width;
 
-        var t_top, t_right, t_bottom, t_left;
+        //각 꼭지점 좌표를 기록해둘 변수.
+        var t_top = local_top; 
+        var t_right = local_left + local_width;
+        var t_bottom = local_top + local_height;
+        var t_left = local_left;
 
-        
+        //꼭짓점 작은 박스 저장해둘 변수?
 
         //cavas에 사각형 그리는 코드
         var canvas = document. getElementById ( "canvas_frame" );
@@ -85,35 +90,11 @@
 
         context.clearRect(0,0,context.canvas.width,context.canvas.height) //설정된 영역만큼 캔버스에서 지움
         context.strokeRect(startX,startY,currentX-startX,currentY-startY) //시작점과 끝점의 좌표 정보로 사각형을 그려준다.
-
+        box_vertex(startX,startY,currentX-startX,currentY-startY);
         console.log(startX,startY,currentX-startX,currentY-startY);
 
     }
 
-    //canvas 밖으로 상자를 만드려고 할 때 실행 될 함수.
-    function box_out(e){
-        var x = e.clientX;
-        var y = e.clientY;
-
-        var top = Math.min(y, startY);
-        var right = width - Math.max(x, startX);
-        var bottom = height - Math.max(y, startY);
-        var left = Math.min(x, startX);
-        
-        if(top <= 0){
-            top = 0;
-        }
-        if(bottom >= _canvas.height) {
-            bottom = _canvas.height;
-        }
-        if (right >= _canvas.width) {
-            right = _canvas.width;
-        }
-        if (left <= 0){
-            left = 0;
-        }
-    }
-    
 
     //session 변수값과 로컬 변수화를 동기화
     function set_json(set_top,set_left,set_width,set_height) {
@@ -135,6 +116,7 @@
     var startX, startY;
     var iX, iY;
     var mv_Drag = false;
+    var size_Drag = false;
         
 
         ctx.strokeRect(local_left, local_top, local_width, local_height );
@@ -148,10 +130,14 @@
 
         console.log("mousedown : "+startX, startY);
 
+        check_vertex();
+
         if( startX > local_left && startX < ( local_left + local_width ) && startY > local_top && startY < ( local_top + local_height ) ) {
             mv_Drag = true;
             crt_drag = false;
         }
+
+        
         if(mv_Drag){
             startX = e.clientX - bb.left;
             startY = e.clientY - bb.top;
@@ -174,7 +160,7 @@
             iY = e.clientY - bb.top;
             console.log("iX iY "+iX,iY)
             console.log(crt_drag);
-            draw(e);
+            draw( );
             }
         if(crt_drag){
             console.log("mMove(create_box)");
@@ -192,6 +178,13 @@
             stY = nowY;
         }
 
+        if(size_Drag) {
+            console.log("size_Drag(Box_resizing)");
+            
+            resizing(e);
+
+        }
+
     }
 
     function mouseup(e) {
@@ -200,7 +193,7 @@
             iX = e.clientX - bb.left;
             iY = e.clientY - bb.top;
             mv_Drag = false;
-            draw(e);
+            draw();
 
             local_top = m_top;
             local_left = m_left;
@@ -241,6 +234,9 @@
             set_json(top,left,width,height);
             console.log("mUP(create box) after 'return' : "+crt_drag);
         }
+        if(size_Drag){
+            size_Drag = false;
+        }
         //json에서 값을 저장하고 값을 로컬 변수에 저장시켜 줄 함수를 작성해야할듯
         console.log("move box");
     }
@@ -253,7 +249,7 @@
             mOut (me)}, false );
  */
     //이동된 박스를 그린다.
-    function draw(e) {
+    function draw() {
         console.log("draw function");
 
         m_top=local_top
@@ -283,6 +279,76 @@
         ctx.clearRect(0,0,canvas.width,canvas.height);
         ctx.strokeRect( m_left, m_top, m_width, m_height );
         console.log("draw box: "+m_top, m_left, m_width, m_height);
+        box_vertex(m_left,m_top,m_width,m_height);
+    }
+
+    function resizing(e) {
+        var x = e.clientX;
+        var y = e.clientY;
+        
+        var re_left, re_top;
+
+        re_top = y - startY;
+        re_left = x - startX;
+
+
+
+        context.clearRect(0,0,context.canvas.width,context.canvas.height);
+        ctx.strokeRect( local_left+re_left, local_top+re_top, m_width + re_left, m_height+re_top );
+    }
+
+    //모서리 사각형 만드는 함수
+    function box_vertex(left,top,width,height) {
+        var left_box = left-10;
+        var top_box = top-10;
+        var right_box = left+width;
+        var bottom_box = top+height;
+
+        ctx.strokeRect(left_box, top_box, 10, 10);
+        ctx.strokeRect(right_box,bottom_box,10,10);
+        ctx.strokeRect(left_box,bottom_box,10,10);
+        ctx.strokeRect(right_box,top_box,10,10);
+    }
+
+    //박스 꼭짓점 영역 체크하는 함수
+    function check_vertex(e) {
+
+        var left_box = local_left-10;
+        var top_box = local_top-10;
+        var right_box = local_left+local_width;
+        var bottom_box = local_top+local_height;
+        //왼쪽 위    
+        if(startX>local_left-10 && startX < local_left 
+            && startY > local_top-10 && startY < local_top){
+            size_Drag = true;
+            mv_Drag = false;
+            crt_drag = false;
+            console.log("size_Drag True");
+        }
+        //오른쪽 아래
+        if(startX>local_left+local_width && startX < local_left+local_width+10 
+            && startY > local_top+local_height && startY < local_top+local_height+10){
+            size_Drag = true;
+            mv_Drag = false;
+            crt_drag = false;
+            console.log("size_Drag True");
+        }
+        //왼쪽 아래
+        if(startX>local_left-10 && startX < local_left 
+            && startY > local_top+local_height && startY < local_top+local_height+10){
+            size_Drag = true;
+            mv_Drag = false;
+            crt_drag = false;
+            console.log("size_Drag True");
+        }
+        //오른쪽 위
+        if(startX>local_left+local_width && startX < local_left+local_width+10 
+            && startY > local_top-10 && startY < local_top){
+            size_Drag = true;
+            mv_Drag = false;
+            crt_drag = false;
+            console.log("size_Drag True");
+        }
     }
 
     function save_local(s_left, s_top, s_width, s_height) {
