@@ -130,7 +130,6 @@
 
         console.log("mousedown : "+startX, startY);
 
-        check_vertex();
 
         if( startX > local_left && startX < ( local_left + local_width ) && startY > local_top && startY < ( local_top + local_height ) ) {
             mv_Drag = true;
@@ -151,6 +150,8 @@
             stY = e. offsetY ; //눌렀을 때 현재 마우스 Y좌표를 stY에 담음
             crt_drag = true ; //그림 그리기는 그리는 상태로 변경
         }
+        check_vertex();
+
     }
 
     function mousemove(e) {
