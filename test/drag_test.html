@@ -135,6 +135,7 @@
         if( startX > local_left && startX < ( local_left + local_width ) && startY > local_top && startY < ( local_top + local_height ) ) {
             mv_Drag = true;
             crt_drag = false;
+            size_Drag = false;
         }
 
         
@@ -236,6 +237,10 @@
         }
         if(size_Drag){
             size_Drag = false;
+            f_left_bottom=false;
+            f_left_top = false;
+            f_right_bottom = false;
+            f_rigth_top = false;
         }
         //json에서 값을 저장하고 값을 로컬 변수에 저장시켜 줄 함수를 작성해야할듯
         console.log("move box");
@@ -288,13 +293,17 @@
         
         var re_left, re_top;
 
-        re_top = y - startY;
-        re_left = x - startX;
+/*         re_top = y - startY;
+        re_left = x - startX; */
 
 
 
         context.clearRect(0,0,context.canvas.width,context.canvas.height);
-        ctx.strokeRect( local_left+re_left, local_top+re_top, m_width + re_left, m_height+re_top );
+        // ctx.strokeRect( local_left+re_left, local_top+re_top, local_width + re_left, local_height+re_top );
+        ctx.strokeRect(x,y, local_width + re_left, local_height+re_top );
+
+        
+        console.log(local_left, local_top, local_width, local_height);
     }
 
     //모서리 사각형 만드는 함수
@@ -324,6 +333,7 @@
             mv_Drag = false;
             crt_drag = false;
             console.log("size_Drag True");
+            f_left_top=true;
         }
         //오른쪽 아래
         if(startX>local_left+local_width && startX < local_left+local_width+10 
@@ -332,6 +342,7 @@
             mv_Drag = false;
             crt_drag = false;
             console.log("size_Drag True");
+            f_right_bottom = true;
         }
         //왼쪽 아래
         if(startX>local_left-10 && startX < local_left 
@@ -340,6 +351,7 @@
             mv_Drag = false;
             crt_drag = false;
             console.log("size_Drag True");
+            f_left_bottom = true;
         }
         //오른쪽 위
         if(startX>local_left+local_width && startX < local_left+local_width+10 
@@ -348,6 +360,7 @@
             mv_Drag = false;
             crt_drag = false;
             console.log("size_Drag True");
+            f_rigth_top = true;
         }
     }
 
