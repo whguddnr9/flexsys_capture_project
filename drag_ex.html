@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas { border : 1px solid black;}
+    </style>
+</head>
+<body>
+
+    <canvas id = "canvas_frame"></canvas>
+    
+</body>
+
+<script>
+    // 1.canvas 크기를 브라우저 크기에 맞게 최적화.
+    var _canvas;
+    _canvas = document.querySelector("#canvas_frame");
+    _canvas.width= window.innerWidth;
+    _canvas.height = window.innerHeight;
+    ////
+
+    // 2. 캔버스 콘텍스트 변수 선언하여 캔버스 요소 다룰 수 있게
+    var canvas = document.getElementById('canvas_frame');
+    var ctx = canvas. getContext('2d');
+    ///
+    
+    // 3. 마우스 이벤트들 등록
+
+    //
+
+</script>
+</html>
