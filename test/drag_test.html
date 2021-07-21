@@ -62,6 +62,8 @@
         context.strokeStyle = "#006cb7"
         var crt_drag = false ;
 
+        var f_left_top, f_left_bottom, f_right_top, f_right_bottom;
+
 
     function mOut(e) {
         e.offsetX
@@ -288,6 +290,7 @@
         box_vertex(m_left,m_top,m_width,m_height);
     }
 
+    //박스 크기 조절하는 함수
     function resizing(e) {
         var x = e.clientX;
         var y = e.clientY;
@@ -297,13 +300,27 @@
 /*         re_top = y - startY;
         re_left = x - startX; */
 
-
-
         context.clearRect(0,0,context.canvas.width,context.canvas.height);
         // ctx.strokeRect( local_left+re_left, local_top+re_top, local_width + re_left, local_height+re_top );
-        ctx.strokeRect(x,y, local_width + re_left, local_height+re_top );
+        //ctx.strokeRect(x,y, local_width + re_left, local_height+re_top );
+        // re_left = Math.max(x,)
+        if(f_left_top){
+            console.log("left_top");
+            ctx.strokeRect(x,y,local_width+startX-x,local_top+startY-y);
+        }
+        else if(f_right_top){
+            console.log("right_top");
+            ctx.strokeRect(local_left,y,local_width+startX-x,local_top+startY-y);
+            console.log("local:"+local_left,local_top,local_width,local_height);
+        }
+        else if(f_left_bottom){
+            console.log("left_bottom");
 
-        
+        }
+        else if(f_right_bottom){
+            console.log("right_bottom");
+
+        }
         console.log(local_left, local_top, local_width, local_height);
     }
 
@@ -333,7 +350,7 @@
             size_Drag = true;
             mv_Drag = false;
             crt_drag = false;
-            console.log("size_Drag True");
+            console.log("left_top : size_Drag True");
             f_left_top=true;
         }
         //오른쪽 아래
@@ -342,7 +359,7 @@
             size_Drag = true;
             mv_Drag = false;
             crt_drag = false;
-            console.log("size_Drag True");
+            console.log("right_bottom : size_Drag True");
             f_right_bottom = true;
         }
         //왼쪽 아래
@@ -351,7 +368,7 @@
             size_Drag = true;
             mv_Drag = false;
             crt_drag = false;
-            console.log("size_Drag True");
+            console.log("left_bottom : size_Drag True");
             f_left_bottom = true;
         }
         //오른쪽 위
@@ -360,7 +377,7 @@
             size_Drag = true;
             mv_Drag = false;
             crt_drag = false;
-            console.log("size_Drag True");
+            console.log("right_top : size_Drag True");
             f_rigth_top = true;
         }
     }
