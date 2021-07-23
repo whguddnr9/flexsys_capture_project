@@ -90,6 +90,8 @@ const button = document.getElementById('cake').onclick = () => canIRun ? takeScr
         var body = document.querySelector('body');
         // 마우스 누르는 이벤트 함수 
         var mousedown = function (e) {
+            console.log("mousedown");
+
             e.preventDefault();
             selectArea = true;
             startX = e.clientX;
@@ -102,6 +104,8 @@ const button = document.getElementById('cake').onclick = () => canIRun ? takeScr
 
         // 클릭한 마우스 떼는 이벤트 함수 
         var mouseup = function (e) {
+            console.log("mouseup");
+
             selectArea = false;
             // (초기화) 마우스 떼면서 마우스무브 이벤트 삭제 
             body.removeEventListener("mousemove", mousemove);
