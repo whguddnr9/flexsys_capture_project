@@ -19,18 +19,6 @@
     <title>Document</title>
     <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
 
-<!--     <style>
-        div{
-            border: 1px solid black;
-            text-align: center;
-            position: absolute;
-        }
-        #test{
-            border: 1px solid black;
-            text-align: center;
-            position: absolute;
-        }
-    </style> -->
 
     <style>
         /* body {
@@ -89,12 +77,14 @@
         }
 
         .mydivheader {
+            position:    absolute;
             padding: 10px;
             cursor: move;
             z-index: 10;
             /* background-color: #2196F3;
             color: #fff; */
         }
+
     </style>
 
 </head>
@@ -291,7 +281,6 @@
                 $createBox.style.borderWidth = top + 'px ' + right + 'px ' + bottom + 'px ' + left + 'px';
             }
         }
-
     }
     //상자 옮기는 함수, 저장할 객체
 
@@ -305,58 +294,44 @@
 </script>
 
 <script>
-    //드래그 가능한 div 만들기. body 에서 mydiv 객체 가지고옴
-    
-    //div id 값을 가지고옴. 
-/*     $('.mydiv').mouseover(function() {
-        var click_id = $(this).attr('id');
-        console.log(click_id);
-        
-        dragElement(document.getElementById(click_id));
+    $(function() {
+        var $container = $('#container');
+        var $selection = $('<div>').addClass('selection-box');
 
-        function dragElement(elmnt) {
-            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-            if (document.getElementById(elmnt.id + "header")) {
-                // 헤더에 dragmousedown 이벤트 등록
-                document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-            } else {
-                //다른곳을 눌렀을 경우
-                elmnt.onmousedown = dragMouseDown;
-            }
+        $container.on('mousedown', function(e) {
+            var click_y = e.pageY;
+            var click_x = e.pageX;
 
-            function dragMouseDown(e) {
-                e = e || window.event;
-                e.preventDefault();
-                //눌렀을때의 좌표값
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                document.onmouseup = closeDragElement;
-                // 드래그 이벤트 등록
-                document.onmousemove = elementDrag;
-            }
+            $selection.css({
+                'top':    click_y,
+                'left':   click_x,
+                'width':  0,
+                'height': 0
+            });
+            $selection.appendTo($container);
 
-            function elementDrag(e) {
-                e = e || window.event;
-                e.preventDefault();
-                // 드래그한 위치
-                pos1 = pos3 - e.clientX;
-                pos2 = pos4 - e.clientY;
-                pos3 = e.clientX;
-                pos4 = e.clientY;
-                // 객체의 새 위치 등록
-                elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-                elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-            }
+            $container.on('mousemove', function(e) {
+                var move_x = e.pageX,
+                    move_y = e.pageY,
+                    width  = Math.abs(move_x - click_x),
+                    height = Math.abs(move_y - click_y),
+                    new_x, new_y;
 
-            function closeDragElement() {
-                //마우스를 땠을때 변수들 초기화
-                document.onmouseup = null;
-                document.onmousemove = null;
-            }
-        }
-    }) */
+                new_x = (move_x < click_x) ? (click_x - width) : click_x;
+                new_y = (move_y < click_y) ? (click_y - height) : click_y;
 
-
+                $selection.css({
+                'width': width,
+                'height': height,
+                'top': new_y,
+                'left': new_x
+                });
+            }).on('mouseup', function(e) {
+                $container.off('mousemove');
+                $selection.remove();
+            });
+        });
+    });
 </script>
 
 <script>
