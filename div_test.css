@@ -1,5 +1,5 @@
 button {
-    position: relative;
+    position: absolute;
     z-index: 9999;
 }
 .mydiv {
@@ -30,6 +30,17 @@ button {
 /* body {
     margin: 0;
 } */
+button .capture_box {
+    height : 30px;
+    width: 100px; 
+    background-color: lightblue;
+
+    border: 1px solid black;
+}
+
+#draw {
+    left : -9999px;
+}
 
 #move_Box {
     width: 100%;

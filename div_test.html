@@ -29,14 +29,8 @@
 </head>
 <body>
     <button id="make" class = "div_btn">takeScreenShot</button>
-    <button id="draw" class = "draw_btn">move div</button>
     <!-- 드래그 가능한 DIV -->
-
-     <div class="mydiv" id="thisdiv">
-        <!-- 헤더를 누르면 부속 요소들을 옮길 수 있음" -->
-        <div class="mydivheader" id="thisdivheader">Click here to move</div>
-        <p>Move</p>
-    </div>     
+    <button id="draw" class = "draw_btn">move div</button>
 
     <canvas id="fake"></canvas>
     <button id="cake" class = "screen_btn">takeScreenShot</button>
@@ -45,6 +39,7 @@
 <!-- 해야할것, div 생성하는데 id  값 다르게 생성하는거 해야함. -->
 
 <script>
+
     var i=1;
 
     //박스를 추가하는 함수.
@@ -55,12 +50,12 @@
 
         var $frame_div   =  $("<div></div>").addClass("mydiv");
         var $head_div    =  $("<div>this is header</div>").addClass("mydivheader");
+        var $capture_btn =  $('<div>capture</div>')
 
 
         $frame_div.attr('id',frame_id);
         $head_div.attr('id',head_id);
         
-
         $("body").append($frame_div);
         $("#frame"+i).append($head_div);
 
@@ -70,144 +65,89 @@
         i++;
 
     }
+        // 캡쳐한 이미지 저장 [추후 추가 canvas 전체 영역 캡처 후 해당 영역만 저장]
 
-    function check_move(){
-    
-        $('.mydiv').mouseover(function() {
-            var click_id = $(this).attr('id');
-            console.log(click_id);
-            console.log("check1");
-            
-            dragElement(document.getElementById(click_id));
-            
-            $("#"+click_id).resizable({
-                //함께 커질영역 
-                //alsoResize:".mydivheader",
-                //비율유지
-                aspectRatio: false,
-                //마우스 hover 아닐때 핸들러 숨기기
-                autoHide: true,
-                //minHeight, maxHeight, minWidth, maxWidth 최소,최대 크기지정 
-            });
-            function dragElement(elmnt) {
-                var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-                if (document.getElementById(elmnt.id + "header")) {
-                    // 헤더에 dragmousedown 이벤트 등록
-                    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-                } else {
-                    //다른곳을 눌렀을 경우
-                    elmnt.onmousedown = dragMouseDown;
-                }
-
-                function dragMouseDown(e) {
-                    e = e || window.event;
-                    e.preventDefault();
-                    //눌렀을때의 좌표값
-                    pos3 = e.clientX;
-                    pos4 = e.clientY;
-                    document.onmouseup = closeDragElement;
-                    // 드래그 이벤트 등록
-                    document.onmousemove = elementDrag;
-                }
-
-                function elementDrag(e) {
-                    e = e || window.event;
-                    e.preventDefault();
-                    // 드래그한 위치
-                    pos1 = pos3 - e.clientX;
-                    pos2 = pos4 - e.clientY;
-                    pos3 = e.clientX;
-                    pos4 = e.clientY;
-                    // 객체의 새 위치 등록
-                    elmnt.style.top  = (elmnt.offsetTop - pos2) + "px";
-                    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-                }
-
-                function closeDragElement() {
-                    //마우스를 땠을때 변수들 초기화
-                    document.onmouseup = null;
-                    document.onmousemove = null;
-                }
-            }
-        })     
+    function save(canvas) {
+        if (navigator.msSaveBlob) {
+            var blob = canvas.msToBlob();
+            return navigator.msSaveBlob(blob, '파일명.png');
+        } else {
+            var el = document.getElementById("target");
+            el.href = canvas.toDataURL("image/png", 1);
+            el.download = '파일명.png';
+            el.click();
+        }
     }
+
     $(document).ready(function() {
-        $("#draw").on("click", function() {
-
-            // add();
-
-                //드래그 가능한 div 만들기. body 에서 mydiv 객체 가지고옴
-
-                // div의 id 값을 가지고 와 해당div 움직임.
-/* 
-                $('.mydiv').mouseover(function() {
-                    var click_id = $(this).attr('id');
-                    console.log(click_id);
-                    console.log("check1");
-                    
-                    dragElement(document.getElementById(click_id));
-                    
-                    $("#"+click_id).resizable({
-                        //함께 커질영역 
-                        //alsoResize:".mydivheader",
-                        //비율유지
-                        aspectRatio: false,
-                        //마우스 hover 아닐때 핸들러 숨기기
-                        autoHide: true,
-                        //minHeight, maxHeight, minWidth, maxWidth 최소,최대 크기지정 
-                    });
-                    function dragElement(elmnt) {
-                        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-                        if (document.getElementById(elmnt.id + "header")) {
-                            // 헤더에 dragmousedown 이벤트 등록
-                            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-                        } else {
-                            //다른곳을 눌렀을 경우
-                            elmnt.onmousedown = dragMouseDown;
-                        }
-
-                        function dragMouseDown(e) {
-                            e = e || window.event;
-                            e.preventDefault();
-                            //눌렀을때의 좌표값
-                            pos3 = e.clientX;
-                            pos4 = e.clientY;
-                            document.onmouseup = closeDragElement;
-                            // 드래그 이벤트 등록
-                            document.onmousemove = elementDrag;
-                        }
-
-                        function elementDrag(e) {
-                            e = e || window.event;
-                            e.preventDefault();
-                            // 드래그한 위치
-                            pos1 = pos3 - e.clientX;
-                            pos2 = pos4 - e.clientY;
-                            pos3 = e.clientX;
-                            pos4 = e.clientY;
-                            // 객체의 새 위치 등록
-                            elmnt.style.top  = (elmnt.offsetTop - pos2) + "px";
-                            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-                        }
-
-                        function closeDragElement() {
-                            //마우스를 땠을때 변수들 초기화
-                            document.onmouseup = null;
-                            document.onmousemove = null;
-                        }
+        document.getElementById("make").addEventListener("click", function (e) {
+            document.querySelector("body").classList.add("edit_cursor");
+            draw(e);
+            
+        });
+        $("#draw").on("click", function(e) {
+            
+            $('.mydiv').mouseover(function() {
+                var click_id = $(this).attr('id');
+                console.log(click_id);
+                
+                dragElement(document.getElementById(click_id));
+                
+                $("#"+click_id).resizable({
+                    //함께 커질영역 
+                    // alsoResize:"#"+click_id+ "header",
+                    //비율유지
+                    aspectRatio: false,
+                    //마우스 hover 아닐때 핸들러 숨기기
+                    autoHide: true,
+                    //minHeight, maxHeight, minWidth, maxWidth 최소,최대 크기지정 
+                });
+                
+                function dragElement(elmnt) {
+                    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+                    if (document.getElementById(elmnt.id + "header")) {
+                        // 헤더에 dragmousedown 이벤트 등록
+                        document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+                    } else {
+                        //다른곳을 눌렀을 경우
+                        elmnt.onmousedown = dragMouseDown;
                     }
-                })  */       
+
+                    function dragMouseDown(e) {
+                        e = e || window.event;
+                        e.preventDefault();
+                        //눌렀을때의 좌표값
+                        pos3 = e.clientX;
+                        pos4 = e.clientY;
+                        document.onmouseup = closeDragElement;
+                        // 드래그 이벤트 등록
+                        document.onmousemove = elementDrag;
+                    }
+
+                    function elementDrag(e) {
+                        e = e || window.event;
+                        e.preventDefault();
+                        // 드래그한 위치
+                        pos1 = pos3 - e.clientX;
+                        pos2 = pos4 - e.clientY;
+                        pos3 = e.clientX;
+                        pos4 = e.clientY;
+                        // 객체의 새 위치 등록
+                        elmnt.style.top  = (elmnt.offsetTop - pos2) + "px";
+                        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+                    }
+
+                    function closeDragElement() {
+                        //마우스를 땠을때 변수들 초기화
+                        document.onmouseup = null;
+                        document.onmousemove = null;
+                    }
+                }
+            })
+       
         });
     });
 
-    //마우스 클릭 이벤트
-    window.onload = function () {
-        //버튼 눌렀을때 이벤트 등록
-        document.getElementById("draw").addEventListener("click", function (e) {
-            document.querySelector("body").classList.add("edit_cursor");
-
-        });
-    }    
     //상자 그리는 함수
     function draw(e) {
         var startX, startY;
@@ -220,6 +160,7 @@
         $createFrame.style.borderWidth = "0 0 " + height + "px 0";
         var $createBox_Frame = $("<div>frame</div>");
         var $createBox = $("<div></div>");
+        var $capture_box = $("<button>capture</button>");
 
         //
         var $movebox = document.createElement("div");
@@ -233,6 +174,7 @@
 
         $createBox_Frame.attr('id',"frame"+i);
         $createBox.attr('id',"frame"+i+"header");
+        $capture_box.attr('id',"capture"+i);
 
         i++;
 
@@ -241,6 +183,7 @@
 
         $("body").append($createBox_Frame);
         $("#frame"+i).append($createBox);
+        $("frame"+i).append($capture_box);
 
         var body = document.querySelector('body');
 
@@ -304,9 +247,7 @@
             $createBox.addClass("mydivheader");
             $createBox_Frame.addClass("mydiv");
             $movebox.parentNode.removeChild($movebox);
-
-            console.log("why??");
-
+            $("#draw").trigger("click");
 
         }
         body.addEventListener("mouseup", mouseup);
