@@ -29,8 +29,14 @@
 </head>
 <body>
     <button id="make" class = "div_btn">takeScreenShot</button>
-    <!-- 드래그 가능한 DIV -->
     <button id="draw" class = "draw_btn">move div</button>
+    <!-- 드래그 가능한 DIV -->
+
+     <div class="mydiv" id="thisdiv">
+        <!-- 헤더를 누르면 부속 요소들을 옮길 수 있음" -->
+        <div class="mydivheader" id="thisdivheader">Click here to move</div>
+        <p>Move</p>
+    </div>     
 
     <canvas id="fake"></canvas>
     <button id="cake" class = "screen_btn">takeScreenShot</button>
@@ -39,7 +45,6 @@
 <!-- 해야할것, div 생성하는데 id  값 다르게 생성하는거 해야함. -->
 
 <script>
-
     var i=1;
 
     //박스를 추가하는 함수.
@@ -50,12 +55,12 @@
 
         var $frame_div   =  $("<div></div>").addClass("mydiv");
         var $head_div    =  $("<div>this is header</div>").addClass("mydivheader");
-        var $capture_btn =  $('<div>capture</div>')
 
 
         $frame_div.attr('id',frame_id);
         $head_div.attr('id',head_id);
         
+
         $("body").append($frame_div);
         $("#frame"+i).append($head_div);
 
@@ -65,86 +70,82 @@
         i++;
 
     }
-        // 캡쳐한 이미지 저장 [추후 추가 canvas 전체 영역 캡처 후 해당 영역만 저장]
-
-    function save(canvas) {
-        if (navigator.msSaveBlob) {
-            var blob = canvas.msToBlob();
-            return navigator.msSaveBlob(blob, '파일명.png');
-        } else {
-            var el = document.getElementById("target");
-            el.href = canvas.toDataURL("image/png", 1);
-            el.download = '파일명.png';
-            el.click();
-        }
-    }
 
     $(document).ready(function() {
-        document.getElementById("make").addEventListener("click", function (e) {
-            document.querySelector("body").classList.add("edit_cursor");
-            draw(e);
-            
-        });
-        $("#draw").on("click", function(e) {
-            
-            $('.mydiv').mouseover(function() {
-                var click_id = $(this).attr('id');
-                console.log(click_id);
-                
-                dragElement(document.getElementById(click_id));
-                
-                $("#"+click_id).resizable({
+        $("#draw").on("click", function() {
+            add();
 
-                    aspectRatio: false,
-                    //마우스 hover 아닐때 핸들러 숨기기
-                    autoHide: true,
-                });
-                
-                function dragElement(elmnt) {
-                    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-                    if (document.getElementById(elmnt.id + "header")) {
-                        // 헤더에 dragmousedown 이벤트 등록
-                        document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-                    } else {
-                        //다른곳을 눌렀을 경우
-                        elmnt.onmousedown = dragMouseDown;
-                    }
+                //드래그 가능한 div 만들기. body 에서 mydiv 객체 가지고옴
 
-                    function dragMouseDown(e) {
-                        e = e || window.event;
-                        e.preventDefault();
-                        //눌렀을때의 좌표값
-                        pos3 = e.clientX;
-                        pos4 = e.clientY;
-                        document.onmouseup = closeDragElement;
-                        // 드래그 이벤트 등록
-                        document.onmousemove = elementDrag;
-                    }
+                // div의 id 값을 가지고 와 해당div 움직임.
 
-                    function elementDrag(e) {
-                        e = e || window.event;
-                        e.preventDefault();
-                        // 드래그한 위치
-                        pos1 = pos3 - e.clientX;
-                        pos2 = pos4 - e.clientY;
-                        pos3 = e.clientX;
-                        pos4 = e.clientY;
-                        // 객체의 새 위치 등록
-                        elmnt.style.top  = (elmnt.offsetTop - pos2) + "px";
-                        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-                    }
+                $('.mydiv').mouseover(function() {
+                    var click_id = $(this).attr('id');
+                    console.log(click_id);
+                    
+                    dragElement(document.getElementById(click_id));
+                    
+                    $("#"+click_id).resizable({
+                        //함께 커질영역 
+                        //alsoResize:".mydivheader",
+                        //비율유지
+                        aspectRatio: false,
+                        //마우스 hover 아닐때 핸들러 숨기기
+                        autoHide: true,
+                        //minHeight, maxHeight, minWidth, maxWidth 최소,최대 크기지정 
+                    });
+                    function dragElement(elmnt) {
+                        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+                        if (document.getElementById(elmnt.id + "header")) {
+                            // 헤더에 dragmousedown 이벤트 등록
+                            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+                        } else {
+                            //다른곳을 눌렀을 경우
+                            elmnt.onmousedown = dragMouseDown;
+                        }
 
-                    function closeDragElement() {
-                        //마우스를 땠을때 변수들 초기화
-                        document.onmouseup = null;
-                        document.onmousemove = null;
+                        function dragMouseDown(e) {
+                            e = e || window.event;
+                            e.preventDefault();
+                            //눌렀을때의 좌표값
+                            pos3 = e.clientX;
+                            pos4 = e.clientY;
+                            document.onmouseup = closeDragElement;
+                            // 드래그 이벤트 등록
+                            document.onmousemove = elementDrag;
+                        }
+
+                        function elementDrag(e) {
+                            e = e || window.event;
+                            e.preventDefault();
+                            // 드래그한 위치
+                            pos1 = pos3 - e.clientX;
+                            pos2 = pos4 - e.clientY;
+                            pos3 = e.clientX;
+                            pos4 = e.clientY;
+                            // 객체의 새 위치 등록
+                            elmnt.style.top  = (elmnt.offsetTop - pos2) + "px";
+                            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+                        }
+
+                        function closeDragElement() {
+                            //마우스를 땠을때 변수들 초기화
+                            document.onmouseup = null;
+                            document.onmousemove = null;
+                        }
                     }
-                }
-            })
-       
+                })        
         });
     });
 
+    //마우스 클릭 이벤트
+    window.onload = function () {
+        //버튼 눌렀을때 이벤트 등록
+        document.getElementById("make").addEventListener("click", function (e) {
+            document.querySelector("body").classList.add("edit_cursor");
+            draw(e);
+        });
+    }    
     //상자 그리는 함수
     function draw(e) {
         var startX, startY;
@@ -155,33 +156,33 @@
         var $createFrame = document.createElement("div");
         $createFrame.id="createframe";
         $createFrame.style.borderWidth = "0 0 " + height + "px 0";
-        var $createBox_Frame = $("<div>frame</div>");
-        var $createBox = $("<div></div>");
-
-        // var $capture_box = $("<button>capture</button>");
-
-        //
-        var $movebox = document.createElement("div");
-        //
-
+        //var $createBox = document.createElement("div");
         var selectArea =false;
+        // $createBox.id = "move_Box";
 
-        //
-        $movebox.id = "move_Box";
-        //
+        
+        ////////////////////////
+        var $frame_div   =  $("<div>frame</div>").addClass("mydiv");
+        var $createBox    =  $("<div>this is header</div>").addClass("mydivheader");
+        
+        var frame_id    =  "frame"+i;
+        var head_id     =  "frame"+i+"header";
 
-        $createBox_Frame.attr('id',"frame"+i);
-        $createBox.attr('id',"frame"+i+"header");
-        // $capture_box.attr('id',"capture"+i);
 
-        i++;
+        $frame_div.attr('id',frame_id);
+        $createBox.attr('id',head_id);
+        
 
-        document.querySelector("body").appendChild($createFrame);
-        document.querySelector("body").appendChild($movebox);
-
-        $("body").append($createBox_Frame);
+        $("body").append($frame_div);
         $("#frame"+i).append($createBox);
-        // $("frame"+i).append($capture_box);
+
+        console.log("frame id :"+frame_id);
+        console.log("head id :"+head_id);
+        
+        i++;
+        /////////////////////////
+        document.querySelector("body").appendChild($createFrame);
+        document.querySelector("body").appendChild($createBox);
 
         var body = document.querySelector('body');
 
@@ -193,13 +194,6 @@
 
             startX = e.clientX;
             startY = e.clientY;
-
-/*             $createBox.css({
-                'top' : startY,
-                'left' : startX,
-                'width' : 0,
-                'height' : 0,
-            }) */
             
             //같은 기능 중첩 방지
             body.removeEventListener("mousedown", mousedown);
@@ -222,34 +216,14 @@
             var height  = Math.max(y, startY) - top;
 
             console.log(left,top,width,height);
-            $createBox.css({
-                'top' : top,
-                'left' : left,
-                'width' : width,
-                'height' : height
-            });
-            $createBox_Frame.css({
-                'top' : top,
-                'left' : left,
-                'width' : width,
-                'height' : height
-            });
-            $movebox.style.top = top + "px";
-                $movebox.style.left = left + "px";
-                $movebox.style.width = width + "px";
-                $movebox.style.height = height + "px";
+            $createBox.style.top = top + "px";
+                $createBox.style.left = left + "px";
+                $createBox.style.width = width + "px";
+                $createBox.style.height = height + "px";
 
             body.removeEventListener("mouseup", mouseup);
             // 마우스 커서 기본으로 변경 
             document.querySelector("body").classList.remove("edit_cursor");
-            $createBox.addClass("mydivheader");
-            $createBox_Frame.addClass("mydiv");
-            $movebox.parentNode.removeChild($movebox);
-            $("#draw").trigger("click");
-            var $capture_box = document.createElement("button");
-
-            document.querySelector("frame"+i).appendChild($capture_box);
-
 
         }
         body.addEventListener("mouseup", mouseup);
@@ -263,36 +237,22 @@
             var _width   = Math.max(x, startX) - left;
             var _height  = Math.max(y, startY) - top;
             
- 
-/*             $createBox.style.left = x;
-            $createBox.style.top = y; */
+
+            $createBox.style.left = x;
+            $createBox.style.top = y;
             
 
             if(selectArea){
-  
                 var top = Math.min(y, startY);
                 var right = width - Math.max(x, startX);
                 var bottom = height - Math.max(y, startY);
                 var left = Math.min(x, startX);
                 console.log("selectArea: true");
 
-                $createBox.css({
-                    'top' : top,
-                    'left' : left,
-                    'width' : width,
-                    'height' : height
-                });
-                $createBox_Frame.css({
-                    'top' : top,
-                    'left' : left,
-                    'width' : width,
-                    'height' : height
-                });
-
-                $movebox.style.top = top + "px";
-                $movebox.style.left = left + "px";
-                $movebox.style.width = _width + "px";
-                $movebox.style.height = _height + "px";
+                $createBox.style.top = top + "px";
+                $createBox.style.left = left + "px";
+                $createBox.style.width = _width + "px";
+                $createBox.style.height = _height + "px";
                 
             }
         }
