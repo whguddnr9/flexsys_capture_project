@@ -127,7 +127,7 @@ const button = document.getElementById('cake').onclick = () => canIRun ? takeScr
                 c.width = width;
                 c.height = height;
                 c.getContext('2d').putImageData(img, 0, 0);
-                //save(c); // crop한 이미지 저장 
+                save(c); // crop한 이미지 저장 
             });
             body.removeEventListener("mouseup", mouseup);
             // 마우스 커서 기본으로 변경 
