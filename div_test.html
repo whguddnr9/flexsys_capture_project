@@ -10,7 +10,7 @@
     [20210723]  마우스 클릭 이벤트 오류 해결중
     [20210724]  마우스 드래그 영역 오류 해결중
     [20210804]  캡처 시 같이 캡처되는 headerdiv 오류 해결
-    ;ㅎ
+                상자 이동 시 창 밖으로 나가는 오류 해결
 
     캡처 확인 버튼넣기 진행
 -->
@@ -150,8 +150,6 @@
                 save(c); // crop한 이미지 저장 
             });
             $(".mydivheader").show();
-
-
         })
 
         var resize_flag= false;
@@ -165,7 +163,7 @@
                 function resize_box(elmnt){
                     resize_flag=true;
                     $("#"+elmnt).resizable({
-
+    
                         aspectRatio: false,
                         //마우스 hover 아닐때 핸들러 숨기기
                         autoHide: true,
@@ -181,12 +179,16 @@
                 
                 function dragElement(elmnt) {
 
-                    var c_left      =   $("#"+frame_parent).offset().left,
-                        c_top       =   $("#"+frame_parent).offset().top,
-                        c_width     =   $("#"+frame_parent).width(),
-                        c_height    =   $("#"+frame_parent).height(),
-                        c_right     =   c_left + c_width,
-                        c_bottom    =   c_top + c_height;
+                    //브라우저 최대크기
+                    var max_width = window.innerWidth;
+                    var max_height = window.innerHeight;
+
+                    //최대 크기 제한시킬 변수들
+                    var c_left      =   $("#"+click_id).offset().left,
+                        c_top       =   $("#"+click_id).offset().top,
+                        c_width     =   $("#"+click_id).width(),
+                        c_height    =   $("#"+click_id).height();
+                    /////
 
 
                     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -226,9 +228,25 @@
                         pos2 = pos4 - e.clientY;
                         pos3 = e.clientX;
                         pos4 = e.clientY;
-                        // 객체의 새 위치 등록
-                        elmnt.style.top  = (elmnt.offsetTop - pos2) + "px";
-                        elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+                        //
+                        if(elmnt.offsetLeft - pos1 <= 0) {
+                            elmnt.style.left = 0 + "px";
+                        }
+                        else if (elmnt.offsetTop - pos2 <= 0){
+                            elmnt.style.top = 0 + "px";
+                        }
+                        else if (elmnt.offsetLeft+c_width > max_width ) {
+                            elmnt.style.left = max_width - c_width + "px";
+                        }
+                        else if (elmnt.offsetTop+c_height > max_height) {
+                            elmnt.style.top = max_height - c_height + "px";
+                        }
+                        else {
+                            // 객체의 새 위치 등록
+                            elmnt.style.top  = (elmnt.offsetTop - pos2) + "px";
+                            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";                            
+                        }
+
                         
                         console.log("dragMouseDrag: true");
                     }
@@ -271,7 +289,6 @@
         document.querySelector("body").appendChild($createFrame);       //캡처 틀
         document.querySelector("body").appendChild($movebox);           //캡처 영역
 
-        // $("frame"+i).append($capture_box);
 
         var body = document.querySelector('body');
 
@@ -284,12 +301,6 @@
             startX = e.clientX;
             startY = e.clientY;
 
-/*             $createBox.css({
-                'top' : startY,
-                'left' : startX,
-                'width' : 0,
-                'height' : 0,
-            }) */
             
             //같은 기능 중첩 방지
             body.removeEventListener("mousedown", mousedown);
@@ -313,18 +324,6 @@
 
             console.log(left,top,width,height);
             
-/*             $createBox.css({
-                'top' : top,
-                'left' : left,
-                'width' : width,
-                'height' : height
-            });
-            $createBox_Frame.css({
-                'top' : top,
-                'left' : left,
-                'width' : width,
-                'height' : height
-            }); */
             
             $movebox.style.top      = top + "px";
             $movebox.style.left     = left + "px";
@@ -334,8 +333,7 @@
             body.removeEventListener("mouseup", mouseup);
             // 마우스 커서 기본으로 변경 
             document.querySelector("body").classList.remove("edit_cursor");
-            // $createBox_Frame.addClass("mydiv");
-            // $createBox.addClass("mydivheader");
+
 
             $movebox.parentNode.removeChild($movebox);
 
@@ -353,9 +351,6 @@
             var _width   = Math.max(x, startX) - left;
             var _height  = Math.max(y, startY) - top;
             
- 
-/*             $createBox.style.left = x;
-            $createBox.style.top = y; */
             
 
             if(selectArea){
@@ -365,19 +360,7 @@
                 var bottom = height - Math.max(y, startY);
                 var left = Math.min(x, startX);
                 console.log("selectArea: true");
-/* 
-                $createBox.css({
-                    'top' : top,
-                    'left' : left,
-                    'width' : width,
-                    'height' : height
-                });
-                $createBox_Frame.css({
-                    'top' : top,
-                    'left' : left,
-                    'width' : width,
-                    'height' : height
-                }); */
+
 
                 $movebox.style.top = top + "px";
                 $movebox.style.left = left + "px";
