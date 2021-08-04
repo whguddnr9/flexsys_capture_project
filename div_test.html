@@ -9,6 +9,8 @@
                 div를 생성해서 상자 틀을 만든다. 
     [20210723]  마우스 클릭 이벤트 오류 해결중
     [20210724]  마우스 드래그 영역 오류 해결중
+    [20210804]  캡처 시 같이 캡처되는 headerdiv 오류 해결
+    ;ㅎ
 
     캡처 확인 버튼넣기 진행
 -->
@@ -33,12 +35,7 @@
     <button id="make" class = "div_btn">takeScreenShot</button>
     <!-- 드래그 가능한 DIV -->
     <button id="draw" class = "draw_btn">move div</button>
-
-    <div class="mydiv" id="thisdiv">
-        <!-- 헤더를 누르면 부속 요소들을 옮길 수 있음" -->
-        <div class="mydivheader" id="thisdivheader">Click here to move</div>
-        <p>Move</p>
-    </div>     
+  
     <canvas id="fake"></canvas>
     <button id="cake" class = "screen_btn">takeScreenShot</button>
     <a id="target" style="display: none"></a>
@@ -102,6 +99,8 @@
             el.download = '파일명.png';
             el.click();
         }
+
+        
     }
 
 
@@ -121,6 +120,8 @@
         $(document).on("click", ".capture-btn",function(){
             var btn_id = $(this).attr('id');
             console.log(btn_id);
+            $(".mydivheader").hide();
+
 
             var frame_parent = $(this).closest('div').attr('id');
 
@@ -148,6 +149,8 @@
                 c.getContext('2d').putImageData(img, 0, 0);
                 save(c); // crop한 이미지 저장 
             });
+            $(".mydivheader").show();
+
 
         })
 
@@ -177,6 +180,15 @@
                 dragElement(document.getElementById(click_id));
                 
                 function dragElement(elmnt) {
+
+                    var c_left      =   $("#"+frame_parent).offset().left,
+                        c_top       =   $("#"+frame_parent).offset().top,
+                        c_width     =   $("#"+frame_parent).width(),
+                        c_height    =   $("#"+frame_parent).height(),
+                        c_right     =   c_left + c_width,
+                        c_bottom    =   c_top + c_height;
+
+
                     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
                     if (resize_flag) {
                         console.log(resize_flag);
@@ -256,15 +268,8 @@
         $movebox.id = "move_Box";
         //
 
-
-        // $capture_box.attr('id',"capture"+i);
-
-        // i++;
-
         document.querySelector("body").appendChild($createFrame);       //캡처 틀
         document.querySelector("body").appendChild($movebox);           //캡처 영역
-
-        //안되고 있음...
 
         // $("frame"+i).append($capture_box);
 
